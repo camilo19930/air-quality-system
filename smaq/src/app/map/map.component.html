@@ -1,0 +1,88 @@
+    <div id="map" class="mapa"></div>
+    <div id="contenedor_iconos_imagenes">
+       <div class="info_imagen">
+           <div id="info_imagen_cabecera">
+               <img src="assets/img/abrir.png" id="back" (click)="cambioImagenInfo()">
+                  Tabla de colores
+               <img src="assets/img/cerrar.png" id="next" (click)="cambioImagenInfo()">
+               
+           </div>
+           <img src={{cambioImagen}} id="tabla" data-toggle="modal" data-target="#exampleModal" id="img_Contaminantes" alt="Tabla de niveles de contaminación" (click)="ruta()">
+        </div> 
+    </div>
+      <div id="contenedor_informacion">
+        <img src={{flecha}} id="boton_flecha" (click)="ocultar_contenedor()">
+
+        <div class="table-responsive" id="informacion">
+                <table class="table">
+                    <tr>
+                        <th scope="col" class="col" (click)="cambiarInformacion(1)" id="btn_info_general">Información General</th>
+                        <th scope="col" class="col" (click)="cambiarInformacion(2)" id="btn_info_especifica" >Información Detallada</th>
+                    </tr>
+                </table>
+                <hr>
+                <div id="informacion_general"> 
+                    <h5>Información General</h5>
+                    <p id="nomEstacion"></p>
+                    <p id="fechaInstall"></p>
+                    <p id="coordenadas"></p>
+                    <img class="img-fluid" id="imagenEstacion" alt="">
+                </div>
+                <div id="informacion_detallada"> 
+                    <h5>Información Detallada</h5>
+               
+                 <table class="table table-striped" id="tablaDetallada" style="display: none;">
+                    <thead>
+                      <tr class="titulo-tabla" id="img2Pdf">
+                        <th scope="col">INFORMACiÓN DETALLADA</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row" id="tamano-celda">Dióxido de Carbono CO:</th>
+                        <th scope="row">{{lecturaCo}}</th>
+                      </tr>
+                      <tr>
+                        <th scope="row" id="tamano-celda">Monóxido de Carbono CO:</th>
+                        <th scope="row" >{{lecturaCo2}}</th>
+                      </tr>
+                      <tr>
+                        <th scope="row" id="tamano-celda">Maperial Particulado Pm1:</th>
+                        <th scope="row">{{lecturaPm1}} pm</th>
+                      </tr>
+                      <tr>
+                        <th scope="row" id="tamano-celda">Maperial Particulado Pm25:</th>
+                        <th scope="row">{{lecturaPm10}} pm</th>
+                      </tr>
+                      <tr>
+                        <th scope="row" id="tamano-celda">Maperial Particulado Pm10:</th>
+                        <th scope="row">{{lecturaPm25}} pm</th>
+                      </tr>
+                      <tr>
+                        <th scope="row"><p class="lecturaIzq" id="pm10"></p></th>
+                      </tr>
+                      <tr>
+                    </tbody>
+                  </table>
+                </div>  
+        </div>
+
+      </div>
+    <!-- Imagen Modal Estado Estaciones-->
+    <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" ><!--style="height: 720px !important; z-index: 12000;"-->
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" id="contentModal">
+                    <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                    <div class="modal-body" id="modal-bodys">
+                            <img src="{{rutaImg}}" class="img-fluid" id="img_tabla_grande" alt="Estado de Estaciones">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="espacio"></div>

@@ -1,0 +1,97 @@
+<!-- ***************************** CARRUSEL ****************************** -->
+<section>
+        <img src="assets/img/cielo.jpg" class="img-fluid" id="img_principal" alt="Responsive image">
+    <div class="row"  style="width: 99%;">
+        <div class="col-sm-9 content_centrar" >
+            <div class="card" id="contTexto">
+                <div class="img-fluid" id="cont_titulo">
+                    <h5 id="titulo">JUSTIFICACIÓN DEL PROYECTO</h5>
+                </div>
+                <div class="texto">
+                    <p id="parrafo" class="card-text">{{texto1}}<a href="https://www.who.int/mediacentre/news/releases/2014/air-pollution/es/">OMS</a> {{texto2}}
+                        <a href="https://www.paho.org/hq/index.php?option=com_content&view=article&id=14454:ambient-and-household-air-pollution-and-health-frequently-asked-questions&Itemid=72243&lang=es">OPS</a> {{texto3}}
+                        <a href="https://www.ins.gov.co/Noticias/Paginas/Informe-Carga-de-Enfermedad-Ambiental-en-Colombia.aspx">IMS</a>{{texto4}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>  
+    <div class="espacio"></div> 
+    <div class="row" style="width: 99%;"> 
+        <div class="col-sm-6 content_centrar">
+            <div class="card" id="tamaño">
+                <div class="bd-example">
+                    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" data-interval="false">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+                            <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner" style="cursor:pointer">
+                            <div class="carousel-item active">
+                                <img src="assets/img/estadio.jpg" id="tamaño" data-toggle="modal" data-target="#exampleModal" alt="..." (click)="ruta(1)">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="assets/img/motos_tulua.jpg" class="d-block w-100" id="tamaño" data-toggle="modal" data-target="#exampleModal" alt="..." (click)="ruta(2)">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="assets/img/montañas.jpg" class="d-block w-100" id="tamaño" data-toggle="modal" data-target="#exampleModal" alt="..." (click)="ruta(3)">
+                            </div>
+                            <div class="carousel-item">
+                                <div class="embed-responsive embed-responsive-16by9 ">
+                                    <iframe class="embed-responsive-item " id="tamaño" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="espacio"></div>
+</section>
+
+<!-- Imagen Modal Estado Estaciones-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="height: 720px !important; z-index: 12000;">
+    <div class="modal-dialog" role="document">
+        
+        <div class="modal-content" id="contentModal">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+            </div>
+            <div class="modal-body">
+                <img src="{{rutaImg}}" class="img-fluid" id="img_tabla_grande" alt="Estado de Esatciones">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Modal body text goes here.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

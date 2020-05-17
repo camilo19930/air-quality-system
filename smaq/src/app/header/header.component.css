@@ -1,0 +1,39 @@
+.navbar {
+    background-color: #36B24B !important;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;/*pseudo elemento para hacer el degradado*/
+    position: relative;
+}
+.navbar::after{
+    position: absolute;
+    bottom: -5px;
+    left: 0px;
+    content: '';
+    background: rgb(219, 218, 224);  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, rgb(219, 218, 224), rgb(219, 218, 224));  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, rgb(219, 218, 224), rgb(219, 218, 224)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    height: 5px;
+    width: 100%;
+    filter: blur(1px); /*se utiliza para desenfocar el pseudo elemento*/
+    z-index: -1;
+}
+
+.navbar-brand {
+    color: white !important;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.btn {
+    color: white !important;
+}
+
+.navbar .nav-item .dropdown-menu:hover {
+    color: #84D030 !important;
+}
+#icono{
+    height: 80px;
+    width: 70px;
+}

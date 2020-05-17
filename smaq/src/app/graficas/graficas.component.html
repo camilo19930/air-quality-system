@@ -1,0 +1,124 @@
+<div class="content">
+  <div>
+    <h1 class="titulo">ESTADISTICAS DE ESTACIONES SMAQ</h1>
+  </div>
+  <div class="col-sm-10 center-div">
+    <div class="">
+      <p class="texto">La contaminación del aire es uno de los mayores problemas de todo el planeta en la actualidad,
+        que se ve reflejado principalmente en las ciudades.
+        Además, contribuye al deterioro de la salud y del ambiente. A continuación, se representará visualmente los
+        datos arrojados por los sensores
+        pms7003, ccs811 y mics4514.</p>
+      <p class="texto">La contaminación del aire es uno de los mayores problemas de todo el planeta en la actualidad,
+        que se ve reflejado principalmente en las ciudades.
+        Además, contribuye al deterioro de la salud y del ambiente. A continuación, se representará visualmente los
+        datos arrojados por los sensores
+        pms7003, ccs811 y mics4514.</p>
+    </div>
+  </div>
+
+  <div class="row" style="width: 90%; margin-top: 20px; margin-left: 8%;">
+    <div class="col-sm-2">
+      <label for="select" style=" color: #4F4F4F; margin-top: 5px; font-size: 14px !important; font-weight: bolder;">Seleccione
+        Estación</label>
+    </div>
+    <div>
+      <select class="form-control form-control-lg" id="select" [(ngModel)]="opcionEstacion"> <!-- (change)="crearGrafica()" -->
+        <option *ngFor="let nomEstacion of estacionesValidas" [value]="nomEstacion.id">
+          {{nomEstacion.descripcion}}</option>
+      </select>
+    </div>
+
+    <div class="fecha-nom">
+      <label for="select">Fecha
+        Desde:</label>
+    </div>
+    <div  class="fecha-valor">
+      <input type="date" class="form-control" [(ngModel)]="fechaDesde" name="fechaDesde" id="fechaSelecet"
+        (keydown.enter)="recibirFecha('desde')">
+    </div>
+    <div class="fecha-nom">
+      <label for="select">Fecha
+        Hasta:</label>
+    </div>
+    <div class="fecha-valor">
+      <input type="date" class="form-control" [(ngModel)]="fechaHasta" name="fechaDesde" id="fechaSelecet"
+        (keydown.enter)="recibirFecha('hasta')">
+    </div>
+    <div>
+      <button style="margin-left: 30px; margin-top:0px ; width: 120px;" type="button" class="btn btn-success" (click)="llamarLecturas()">Buscar</button>
+    </div>
+  </div>
+<div class="espacio"></div>
+  <h1>{{nombreEstacion}}</h1>
+  <div class="row" style="width: 98%;">
+    <div class="col-sm-7">
+      <div class="card sin_borde">
+        <div class="card-body">
+          <div class="content" id="img1Pdf">
+
+            <div id="content_grafico_estaciones">
+              <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+              </canvas>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="card sin_borde" style="height: 100%;">
+        <div class="card_estaciones sin_borde">
+          <div class="card-body informacionEstaciones">
+            <table class="table table-striped">
+              <thead>
+                <tr class="titulo-tabla" id="img2Pdf">
+                  <th scope="col">INFORMACiÓN GRÁFICO</th>
+                  <th scope="col"> </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Nombre de de la estación:</th>
+                  <td>{{nombreEstacion}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Ubicación</th>
+                  <td>{{ubicacion}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">ICA registrado:</th>
+                  <td>{{sumIca}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">monóxido de carbono:</th>
+                  <td>{{sumCo}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">dióxido de nitrogeno:</th>
+                  <td>{{sumCo2}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Nivel de PM10:</th>
+                  <td>{{sumPm10}} ppm</td>
+                </tr>
+                <tr>
+                  <th scope="row">Nivel de PM2.5:</th>
+                  <td>{{sumPm25}} ppm</td>
+                </tr>
+                <tr>
+                  <th scope="row">Nivel de PM1.0:</th>
+                  <td>{{sumPm1}} ppm</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="btn btn-success" (click)="downloadReport($event)">Descargar Reporte</button><br>
+<div class="espacio"></div>

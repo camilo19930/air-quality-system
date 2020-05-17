@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  font-size: 13px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  width: 100%;
+  /* font-family: 'Open Sans', sans-serif; */
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  /* font-family: Arial, Helvetica, sans-serif;
+   
+    border: 3px solid black;
+    display: flex;*/
+   /* font-family: Arial, Verdana, Tahoma, sans-serif;*/
+
+    
+  }
+h1{
+  font-weight: bold;
+  color: #4F4F4F;
+}
+h2{
+  font-weight: bold;
+  color: #4F4F4F;
+}
+h3{
+  font-weight: bold;
+  color: #4F4F4F;
+}
+h4{
+  font-weight: bold;
+  color: #4F4F4F;
+}
+h5{
+  font-weight: bold;
+  color: #4F4F4F;
+}
+.espacio {
+  width: 100%;
+  height: 40px;
+}
+header {
+  background-color: #edecec;
+}

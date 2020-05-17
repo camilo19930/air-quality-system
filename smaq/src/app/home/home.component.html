@@ -1,0 +1,106 @@
+
+    <!--****************************************INICIO CARRUSEL*****************************-->
+    <div class="carru">
+        <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+                <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner" >
+                <div class="carousel-item active">
+                    <img src="assets/img/contaminacion.jpg" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="sub_titulo_img">Mapa de calidad del aire de Tulúa</h5>
+                        <p>¿Quieres conocer la calidad del aire de la ciudad? </p>
+                        <p [routerLink]="['/mapa']" style="cursor:pointer;">Haz clic!</p>
+                   </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/img/picacho_tulua.jpeg" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="sub_titulo_img">Contribuye con el medio ambiente</h5>
+                        <p>Tú puedes ayudar a mejorar la calidad del aire que respiras simplemente toma conciencia</p>
+                   </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/img/cielo2.jpg" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="sub_titulo_img">Mapa de calidad del aire de Tulúa</h5>
+                        <p>¿Quieres conocer la calidad del aire de la ciudad?</p>
+                        <p>Haz clic!</p>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+<!--************************************FIN CARRUSEL****************************************************-->
+<br><br>
+<!-- ****************************INICIO INFORMACIÓN RESUMIDA*******************************************-->
+ 
+    <div class="card-deck" style="width: 98%;">
+        <div class="card" id="text_resumen1">
+            <img src="assets/img/enfermedades.jpg" class="card-img-top" alt="..." id="imgResumen">
+            <div class="card-body">
+                <h5 class="card-title">{{titEnfer}}</h5>
+                <p class="card-text">{{textEnfer}}</p>
+                <a routerLink="/educate" class="btn btn-success">Leer más</a>
+                <!--<a href="/educate#articulo1" class="btn btn-success">Leer más</a>-->
+
+            </div>
+        </div>
+        
+        <div class="card" id="text_resumen">
+                <img src="assets/img/trafico1.jpg" class="card-img-top" alt="..." id="imgResumen">
+                   <article class="card-body">
+                    <h5 class="card-title">{{titCont}}</h5>
+                    <p class="card-text">{{textCont}}</p>
+                    <!--<a href="/educate#articulo2" class="btn btn-success">Leer más</a>-->
+                    <a routerLink="/educate" class="btn btn-success">Leer más</a>
+                </article>
+        </div>
+        <div class="card" id="text_resumen2">
+            <img src="assets/img/biblioteca_dia.jpeg" class="card-img-top" alt="..." id="imgResumen">
+           <article class="card-body">
+                <h5 class="card-title">{{titTra}}</h5>
+                <p class="card-text">{{textTra}}</p>
+                <a routerLink="/educate" class="btn btn-success">Leer más</a>
+               <!--<a href="/educate#articulo3" class="btn btn-success">Leer más</a>-->
+            </article>
+        </div>
+    </div>
+
+<!-- ****************************FIN INFORMACIÓN RESUMIDA*******************************************-->
+<br><br>
+<!-- ****************************INICIO IMAGEN EINFORMACIÓN HOME*******************************************-->
+
+    <div class="row" style="width: 99%;">
+        <div class="col-sm-6" >
+            <div class="card">
+                <div class="card-body">
+                    <img src="assets/img/biblioteca.jpeg" alt="..." class="img-thumbnail">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5>{{titDesc}}</h5>
+                    <p>{{textDesc1}}</p>
+                    <p>{{textDesc2}}</p>
+                    <p>{{textDesc3}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- ****************************FIN IMAGEN EINFORMACIÓN HOME*******************************************-->
+
+<div class="espacio"></div>

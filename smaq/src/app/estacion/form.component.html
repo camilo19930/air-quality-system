@@ -1,0 +1,35 @@
+<div class="card bg-light mb-3" style="max-width: 30rem;">
+    <div class="card-header">{{titulo}}</div>
+
+    <form>
+        <div class="form-group">
+            <label for="ubicacion">Ubicación</label>
+            <input type="text" class="form-control" [(ngModel)]="estacion.ubicacion" name="ubicacion" id="ubicacion" placeholder="Ingrese la ubicación de la estación">
+        </div>
+        <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <input type="text" class="form-control" [(ngModel)]="estacion.descripcion" name="descripcion" id="descripcion" placeholder="Descripción">
+        </div>
+        <div class="form-group">
+            <label for="fechaInstalacion">Fecha Instalación</label>
+            <input type="text" class="form-control" [(ngModel)]="estacion.fechaInstalacion" name="fechaInstalacion" id="fechaInstalacion" placeholder="Ingrese la fecha de instalacion de la estación">
+        </div>
+        <!--<div class="form-group">
+            <label for="estado">Estado</label>
+            <input type="text" [(ngModel)]="estacion.estado" class="form-control" name="estado" id="estado" placeholder="Ingrese el estado de la estación">
+        </div> -->
+        <div div class="form-group">
+            <label for="estado">Estado</label>
+            <select class="form-control form-control-lg" [(ngModel)]="estacion.estado" name="estado" id="estado">
+            <option value=true>Activo</option>
+            <option value=false>Inactivo</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-success" (click)="crear()" *ngIf="!estacion.id else elseblock">Crear</button>
+        <ng-template #elseblock>
+            <button type="submit" class="btn btn-success" (click)="update()">Editar</button>
+        </ng-template>
+
+
+    </form>
+</div>

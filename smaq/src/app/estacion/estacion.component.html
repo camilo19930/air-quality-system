@@ -1,0 +1,30 @@
+<div class="card">
+    <div class="card-header">
+        Listado de Estaciones
+    </div>
+    <table class="table table-bordered table-dark">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Ubicacion</th>
+                <th scope="col">descripcion</th>
+                <th scope="col">Fecha Instalcion</th>
+                <th scope="col">estado</th>
+                <th scope="col">Editar</th>
+                <th scope="col">Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let estacion of estacion">
+                <th scope="row">{{estacion.id}}</th>
+                <td>{{estacion.ubicacion}}</td>
+                <td>{{estacion.descripcion}}</td>
+                <td>{{estacion.fechaInstalacion}}</td>
+                <td>{{estacion.estado}}</td>
+                <button type="button" name="editar" [routerLink]="['/crearEstacion/form',estacion.id]" class="btn btn-info">Editar</button>
+                <td><button type="button" name="eliminar" (click)="delete(estacion)" class="btn btn-info">Eliminar</button></td>
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-info" routerLink="/crearEstacion">Crear</button>
+</div>

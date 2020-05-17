@@ -1,0 +1,60 @@
+@media only screen and (min-width: 798px) {
+#text_resumen1 {
+    margin: 0px 0px 0px 60px;
+   
+}
+#text_resumen3 {
+    margin: 0px 60px 0px 0px;
+   
+}
+}
+.card-deck {
+    align-content: center;
+}
+/*
+#imgResumen{
+    width: 100px;
+    height: 120px;
+} */
+
+/*
+#text_resumen {
+    -webkit-transition: all 500ms ease;
+    -o-transition: 300ms ease;
+    transation: 300ms ease;
+}
+
+#text_resumen:hover {
+    padding: 7px 12px;
+}
+*/
+.autor_fotos{
+    color: white;
+    margin: -20px 0px 0px 200px;
+    font:bold;
+    font-size: 14px;
+}
+
+@media only screen and (min-width: 350px) {
+    .autor_fotos{
+        color: white;
+        margin: -20px 0px 0px 30px;
+        font:bold;
+        font-size: 14px;
+    }
+    .d-block  {
+            height: 200px;
+        }
+        /*.carousel-caption {
+            height: 20px !important;
+            width: 40px !important;
+            font-size: 10px !important;
+            border: 2px solid black !important;
+            color: red !important;
+        } */
+    }
+
+    .carru{
+    border: 2px solid green; 
+    border-image: linear-gradient(to bottom, #c1bfea 0%, #c7bbed 100%) 1;
+    }

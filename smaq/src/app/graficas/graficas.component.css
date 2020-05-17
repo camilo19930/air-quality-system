@@ -1,0 +1,150 @@
+.content {
+    text-align: center;
+}
+
+.titulo {
+    margin-top: 0px;
+    margin-bottom: 50px;
+    /* background: black; */
+    font-size: 33px;
+}
+
+.center-div {
+    margin: auto;
+}
+
+.fecha-nom {
+    width: 100px;
+    margin-left: 10px;
+    margin-top: 5px;
+    font-size: 14px !important;
+    font-weight: bolder;
+    color: #4F4F4F;
+}
+
+.fecha-valor {
+    width: 170px;
+    margin-left: 10px;
+}
+
+.titulo-2 {
+    margin-bottom: -15px;
+}
+
+.content_grafico {
+    display: block;
+    display: inline-block;
+    width: 70%;
+    height: 80%;
+}
+
+#info_grafica_estaciones {
+    display: block;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+#content_grafico_estaciones {
+    width: 90%;
+    height: 80%;
+}
+
+.btn {
+    margin: -10px 0px 0px 87%;
+}
+
+@media only screen and (max-width: 415px) {
+    .btn {
+        margin: -10px 0px 0px 65%;
+    }
+    .informacionEstaciones {
+        width: 340px;
+        margin-left: 0px;
+    }
+    .btn {
+        align-content: center;
+        font-size: 13px;
+        height: 46px;
+        width: 100px;
+    }
+    .titulo {
+        font-size: 20px;
+        height: 60px;
+        border: 2px solid red !important;
+        margin: auto;
+    }
+}
+
+#img2Pdf {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: auto;
+}
+
+.texto {
+    text-align: justify;
+    width: 94%;
+    margin: auto;
+}
+
+.sin_borde {
+    border: 0px solid transparent;
+    margin: auto;
+}
+
+.informacionEstaciones {
+    text-align: justify;
+    line-height: 0.8;
+}
+
+.btn {
+    position: absolute;
+}
+
+#cont_titulo::after {
+    position: absolute;
+    bottom: -5px;
+    left: 0px;
+    content: '';
+    background: rgb(219, 218, 224);
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, rgb(219, 218, 224), rgb(219, 218, 224));
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, rgb(219, 218, 224), rgb(219, 218, 224));
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    height: 5px;
+    width: 100%;
+    filter: blur(1px);
+    /*se utiliza para desenfocar el pseudo elemento*/
+    z-index: -1;
+}
+
+.row {
+    margin-left: 20px;
+}
+
+.informacionEstaciones {
+    height: 100%;
+    width: 100%;
+    /* border: 2px solid red; */
+}
+
+.titulo-info {
+    font-size: 17px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#select {
+    width: 100%;
+    height: 30px;
+    font-size: 12px;
+    /* margin-left: -40px; */
+}
+
+.titulo-tabla {
+    background-color: #36B24B !important;
+    color: white;
+}
