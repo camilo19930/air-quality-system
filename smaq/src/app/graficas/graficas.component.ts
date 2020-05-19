@@ -64,56 +64,7 @@ export class GraficasComponent implements OnInit {
   public pruebaArray = [];
   public fechas: any = [];
   public contMes = 0;
-  //   {
-  //     "id": 1,
-  //     "idDispositivo": 1,
-  //     "fecha": "2019-09-06T22:00:00.000+0000",
-  //     "lectura": " \n\t ica: 1020,\n\t pm1:200,\n     pm25:1230,\n     pm10:0,\n\t co: 2345,\n\t co2: 1223\n\t } \n "
-  //   },
-  //   {
-  //     "id": 2,
-  //     "idDispositivo": 1,
-  //     "fecha": "2019-06-06T22:00:00.000+0000",
-  //     "lectura": "\n\t ica: 1020,\n\t pm1:200,\n     pm25:130,\n     pm10:0,\n\t co: 25,\n\t co2: 456\n\t } \n  "
-  //   },
-  //   {
-  //     "id": 3,
-  //     "idDispositivo": 2,
-  //     "fecha": "2019-06-06T22:00:00.000+0000",
-  //     "lectura": "\n\t ica: 520,\n\t pm1:100,\n     pm25:120,\n     pm10:300,\n\t co: 297,\n\t co2: 122\n\t } \n  "
-  //   },
-  //   {
-  //     "id": 4,
-  //     "idDispositivo": 2,
-  //     "fecha": "2019-06-06T22:00:00.000+0000",
-  //     "lectura": "\n\t ica: 520,\n\t pm1:100,\n     pm25:120,\n     pm10:300,\n\t co: 297,\n\t co2: 122\n\t } \n  "
-  //   },
-  //   {
-  //     "id": 5,
-  //     "idDispositivo": 3,
-  //     "fecha": "2019-06-06T22:00:00.000+0000",
-  //     "lectura": " {\n\t ica: 520,\n\t pm1:100,\n     pm25:120,\n     pm10:300,\n\t co: 297,\n\t co2: 122\n\t } \n  "
-  //   },
-  //   {
-  //     "id": 6,
-  //     "idDispositivo": 3,
-  //     "fecha": "2019-06-06T22:00:00.000+0000",
-  //     "lectura": "\n\t ica: 520,\n\t pm1:100,\n     pm25:120,\n     pm10:300,\n\t co: 297,\n\t co2: 122\n\t } \n  "
-  //   },
-  //   {
-  //     "id": 7,
-  //     "idDispositivo": 4,
-  //     "fecha": "2019-08-06T22:00:00.000+0000",
-  //     "lectura": " \n\t ica: 520,\n\t pm1:100,\n     pm25:120,\n     pm10:300,\n\t co: 297,\n\t co2: 122\n\t } \n  "
-  //   },
-  //   {
-  //     "id": 8,
-  //     "idDispositivo": 4,
-  //     "fecha": "2019-07-06T22:00:00.000+0000",
-  //     "lectura": " \n\t ica: 20,\n\t pm1: 430,\n     pm25:20,\n     pm10:140,\n\t co: 345,\n\t co2: 342\n\t } \n  "
-  //   }
-  // ]
-  //fin ejemplo
+
   datosGrafica: any = [{
     codEstacion: null,
     codDispositivo: null,
@@ -165,7 +116,7 @@ export class GraficasComponent implements OnInit {
   }
   llenarArrayFechas(fecha) {
     let busqueda;
-    switch (fecha.slice(5, 7)) {
+    switch (fecha.slice(3, 5)) {
       case '01':
         busqueda = this.fechas.find(option => option.nombre === 'Enero');
         if (busqueda == undefined) {
@@ -252,10 +203,14 @@ export class GraficasComponent implements OnInit {
 
   obtenerArrayPrueba() {
     this.pruebaArray.forEach((element, index) => {
-      if (element.fecha.slice(0, 10) >= this.fechaDesde && element.fecha.slice(0, 10) <= this.fechaHasta) {
-        this.llenarArrayFechas(element.fecha.slice(0, 10));
-        this.desarmarFiltro(element.lectura, element.idDispositivo, element.fecha.slice(0, 10));
-        // console.log('fechas arrya: ', this.fechas);
+      let fechaElem = element.fecha.slice(6, 10) + '-' + element.fecha.slice(3, 5) + '-' + element.fecha.slice(0, 2);
+      // if (element.fecha.slice(0, 10) >= this.fechaDesde && element.fecha.slice(0, 10) <= this.fechaHasta) {
+      // if (element.fecha >= this.fechaDesde && element.fecha <= this.fechaHasta) {
+      if (fechaElem >= this.fechaDesde && fechaElem <= this.fechaHasta) {
+        // this.llenarArrayFechas(element.fecha.slice(0, 10));
+        this.llenarArrayFechas(element.fecha);
+        this.desarmarFiltro(element.lectura, element.idDispositivo, element.fecha);
+        this.graficoEstaciones();
       }
     });
   }
@@ -263,6 +218,9 @@ export class GraficasComponent implements OnInit {
     if (this.fechaDesde == undefined || this.fechaHasta == undefined) {
       alert('Debe seleccionar el rango de fehcas');
     } else {
+      this.fechas = [];
+      this.pruebaArray = [];
+      this.sumIca = 0;
       await this.obtenerLecturas();
       this.crearGrafica();
     }
@@ -270,7 +228,6 @@ export class GraficasComponent implements OnInit {
 
 
   desarmarFiltro(filtro, codigoDispositivo, fecha) {
-    // console.log('DATA 1: ',filtro);
     let nomAgente = '';
     let codigoAscci;
     let arrayOK = [];
@@ -311,7 +268,7 @@ export class GraficasComponent implements OnInit {
     let cont = 0;
     this.fechas.forEach(element => {
       this.pruebaArray.forEach(element2 => {
-        if (element2.fecha.slice(5, 7) == element.id) {
+        if (element2.fecha.slice(3, 5) == element.id) {
           cont++;
         }
       });
@@ -320,23 +277,24 @@ export class GraficasComponent implements OnInit {
     });
   }
 
-  private sumarLecturas(data: any) {
-
+  private sumarLecturas(data: any) { //ACA ESTOY
     let a;
     this.contadorIteracion++;
+    console.log('DATA: ', data);
     data.forEach((element, index) => {
+      console.log('slice: ', element.fecha.slice(3, 5));
       switch (element.nom[0]) {
         case 'lectura':
           this.sumIca += parseInt(element.nom[2]);
-          a = this.fechas.find(option => option.id == element.fecha.slice(5, 7));
-
+          console.log('FECHAS ANTES ', this.fechas);
+          a = this.fechas.find(option => option.id == element.fecha.slice(3, 5));
+          console.log('busqueda ', a);
           if (a != undefined) {
-            this.fechas.forEach(element => {
-              if (element.id == a.id) {
-                element.totalPorcentICA = this.sumIca;
-              } else {
-              }
-            });
+          this.fechas.forEach(element => {
+            if (element.id == a.id) {
+            element.totalPorcentICA = this.sumIca;
+            } 
+          });
           }
           break;
         case 'pm1':
@@ -355,7 +313,6 @@ export class GraficasComponent implements OnInit {
           this.sumCo2 += parseInt(element.nom[1]);
           break;
       }
-      // console.log('Fechas: ', this.fechas);
     });
     if (this.contadorIteracion == this.pruebaArray.length) {
       this.sumCo2 = this.sumCo2 / this.pruebaArray.length;
@@ -377,32 +334,19 @@ export class GraficasComponent implements OnInit {
   }
   async obtenerLecturas() {
     let respuesta;
-    console.log('Esatcion Selccionada: ', this.opcionEstacion);
-    this.codigoEstacion = this.opcionEstacion -1;
-    this.codigoEstacion = 1;
+    console.log('OPCION ESTACION: ', this.opcionEstacion)
+    // this.codigoEstacion = this.opcionEstacion - 1;
+    // this.codigoEstacion = 2;
     // if (this.codigoEstacion == 0) {
-      respuesta = await this.graficaService.obtenerLecturas(this.codigoEstacion)
-        .then((res) => {
-          this.lecturas = res;
-          this.pruebaArray = this.lecturas;
-          this.obtenerArrayPrueba();
-        }).catch((error) => {
-          console.log(error);
-        });
-    // } else {
-    //   console.log('ENTRO A CERO');
-      // respuesta = await this.graficaService.obtenerLecturas(1)
-      //   .then((res) => {
-      //     this.lecturas = res;
-      //     this.pruebaArray = this.lecturas;
-      //     this.obtenerArrayPrueba();
-      //   }).catch((error) => {
-      //     console.log(error);
-      //   });
-
-    // }
-
-
+    respuesta = await this.graficaService.obtenerLecturas(this.opcionEstacion-1)
+      .then((res) => {
+        this.lecturas = res;
+        this.pruebaArray = this.lecturas;
+        console.log('RESPUESTA: ', this.pruebaArray);
+        this.obtenerArrayPrueba();
+      }).catch((error) => {
+        console.log(error);
+      });
   }
 
   async obtenerDispositivos() {
@@ -459,7 +403,6 @@ export class GraficasComponent implements OnInit {
     };
     let array = [];
     let arrayValores = [];
-    console.log(this.fechas);
     this.fechas.forEach(element => {
       array.push(element.nombre);
       arrayValores.push(element.sumaTotal / element.totalRegistros);
@@ -485,8 +428,6 @@ export class GraficasComponent implements OnInit {
     };
     let array = [];
     let arrayValores = [];
-    console.log(this.fechas);
-    console.log('FECHA: ', this.fechas);
     this.fechas.forEach(element => {
       array.push(element.nombre);
       arrayValores.push(element.sumaTotal / element.totalRegistros);
