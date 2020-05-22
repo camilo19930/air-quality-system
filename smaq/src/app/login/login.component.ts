@@ -26,7 +26,7 @@ public passwordMaster: any;
       alert('Credenciales incorrectas');
     }else {
       console.log(this.user, '        ', this.password);
-      window.location.href = 'http://localhost:4200/estacion';
+      window.location.href = 'http://localhost:4200/menuLogin';
     }
     
   }

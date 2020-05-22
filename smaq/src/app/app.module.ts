@@ -21,6 +21,7 @@ import {IMqttMessage,  MqttModule,  IMqttServiceOptions} from 'ngx-mqtt';
 import { ContainerComponent } from './container/container.component';
 import { LoginComponent } from './login/login.component';
 import { DecimalPipe, CurrencyPipe, DatePipe, CommonModule } from '@angular/common';
+import { MenuLoginComponent } from './login/menu-login/menu-login.component';
 
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -45,7 +46,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     JustificacionComponent,
     EducacionComponent,
     ContainerComponent,
-    LoginComponent
+    LoginComponent,
+    MenuLoginComponent
   ],
   imports: [
     HttpClientModule,

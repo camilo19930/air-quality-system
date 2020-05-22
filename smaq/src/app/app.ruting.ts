@@ -9,55 +9,59 @@ import { Routes, RouterModule } from '@angular/router';
 import { EstacionComponent } from './estacion/estacion.component';
 import { FormComponent } from './estacion/form.component';
 import { HomeComponent } from './home/home.component';
-import { GraficasComponent} from './graficas/graficas.component';
+import { GraficasComponent } from './graficas/graficas.component';
 import { JustificacionComponent } from './justificacion/justificacion.component';
 import { EducacionComponent } from './educacion/educacion.component';
 import { LoginComponent } from './login/login.component';
+import { MenuLoginComponent } from './login/menu-login/menu-login.component';
 
 // Array de rutas
 const appRoutes: Routes = [
 
 
+  {
+    path: 'reportes',
+    component: GraficasComponent
+  },
+  {
+    path: 'estacion',
+    component: EstacionComponent
+  },
+  {
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: 'crearEstacion',
+    component: FormComponent
+  },
+  {
+    path: 'crearEstacion/form/:id',
+    component: FormComponent
+  },
+  {
+    path: 'mapa',
+    component: MapComponent
+  },
+  {
+    path: 'justificacion',
+    component: JustificacionComponent
+  },
+  {
+    path: 'educate',
+    component: EducacionComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'menuLogin', component: MenuLoginComponent
+  },
     {
-      path: 'reportes',
-      component: GraficasComponent
-    },
-    {
-        path: 'estacion',
-        component: EstacionComponent
-    },
-    {
-      path: 'home',
-      component: HomeComponent
-    },
-      {
-        path: 'crearEstacion',
-        component: FormComponent
-    },
-      {
-        path: 'crearEstacion/form/:id',
-        component: FormComponent
-    },
-    {
-      path: 'mapa',
-      component: MapComponent
-    },
-    {
-      path: 'justificacion',
-      component: JustificacionComponent
-    },
-    {
-      path: 'educate',
-      component: EducacionComponent
-    },
-    {
-      path: 'login',
-      component: LoginComponent
-    },
-    {
-      path: '',
-      component: HomeComponent
-    }
+    path: '',
+    component: HomeComponent
+  }
 ];
 
 // modulo routing servicios
