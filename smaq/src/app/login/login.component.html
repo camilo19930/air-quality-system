@@ -1,0 +1,19 @@
+<main>
+  <!-- <form [formGroup]="form" novalidate autocomplete="off" (keydown.enter)="$event.preventDefault()"> -->
+  <form novalidate autocomplete="off" (keydown.enter)="$event.preventDefault()">
+    
+    <div style="text-align: center; height: 100%; margin-top: -30px;">
+      <div style="border: 2px solid gray; width: 30%;margin: auto;"><br>
+        <img src="../../assets/img/icono_smaq_verde.png" alt="">
+        <input type="text" placeholder="Nombre Usuario" [(ngModel)]="user" name="user" style="width: 70%;"><br><br>
+        <input type="password" placeholder="Contraseña" [(ngModel)]="password" name="pass" style="width: 70%;"><br><br>
+        
+        <button style="margin-left: 30px; margin-top:0px ; width: 120px;" type="button"
+          class="btn btn-success" (click)="login()">Entrar</button>
+        <div class="espacio"></div>
+      </div>
+      
+    </div>
+    <div class="espacio"></div>
+  </form>
+</main>

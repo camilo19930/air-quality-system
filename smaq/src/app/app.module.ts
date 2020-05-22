@@ -19,6 +19,8 @@ import {JustificacionComponent} from './justificacion/justificacion.component';
 import {EducacionComponent} from './educacion/educacion.component';
 import {IMqttMessage,  MqttModule,  IMqttServiceOptions} from 'ngx-mqtt';
 import { ContainerComponent } from './container/container.component';
+import { LoginComponent } from './login/login.component';
+import { DecimalPipe, CurrencyPipe, DatePipe, CommonModule } from '@angular/common';
 
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -42,7 +44,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     GraficasComponent,
     JustificacionComponent,
     EducacionComponent,
-    ContainerComponent
+    ContainerComponent,
+    LoginComponent
   ],
   imports: [
     HttpClientModule,
@@ -53,7 +56,10 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     LeafletModule.forRoot(), // Importaciones para el mapa
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
   ],
-  providers: [EstacionService, appRoutingProviders],
+  providers: [
+    EstacionService,
+     appRoutingProviders,
+     DecimalPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

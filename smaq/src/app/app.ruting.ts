@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { GraficasComponent} from './graficas/graficas.component';
 import { JustificacionComponent } from './justificacion/justificacion.component';
 import { EducacionComponent } from './educacion/educacion.component';
+import { LoginComponent } from './login/login.component';
 
 // Array de rutas
 const appRoutes: Routes = [
@@ -48,6 +49,10 @@ const appRoutes: Routes = [
     {
       path: 'educate',
       component: EducacionComponent
+    },
+    {
+      path: 'login',
+      component: LoginComponent
     },
     {
       path: '',

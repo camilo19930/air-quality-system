@@ -26,6 +26,7 @@
     "angular-osm": "^1.2.2",
     "chart.js": "^2.8.0",
     "core-js": "^2.5.4",
+    "crypto-js": "^4.0.0",
     "html2canvas": "^1.0.0-rc.3",
     "jspdf": "^1.5.3",
     "leaflet": "^1.5.1",

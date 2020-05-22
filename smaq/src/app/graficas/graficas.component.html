@@ -19,11 +19,13 @@
 
   <div class="row" style="width: 90%; margin-top: 20px; margin-left: 8%;">
     <div class="col-sm-2">
-      <label for="select" style=" color: #4F4F4F; margin-top: 5px; font-size: 14px !important; font-weight: bolder;">Seleccione
+      <label for="select"
+        style=" color: #4F4F4F; margin-top: 5px; font-size: 14px !important; font-weight: bolder;">Seleccione
         Estación</label>
     </div>
     <div>
-      <select class="form-control form-control-lg" id="select" [(ngModel)]="opcionEstacion"> <!-- (change)="crearGrafica()" -->
+      <select class="form-control form-control-lg" id="select" [(ngModel)]="opcionEstacion">
+        <!-- (change)="crearGrafica()" -->
         <option *ngFor="let nomEstacion of estacionesValidas" [value]="nomEstacion.id">
           {{nomEstacion.descripcion}}</option>
       </select>
@@ -33,7 +35,7 @@
       <label for="select">Fecha
         Desde:</label>
     </div>
-    <div  class="fecha-valor">
+    <div class="fecha-valor">
       <input type="date" class="form-control" [(ngModel)]="fechaDesde" name="fechaDesde" id="fechaSelecet"
         (keydown.enter)="recibirFecha('desde')">
     </div>
@@ -46,10 +48,11 @@
         (keydown.enter)="recibirFecha('hasta')">
     </div>
     <div>
-      <button style="margin-left: 30px; margin-top:0px ; width: 120px;" type="button" class="btn btn-success" (click)="llamarLecturas()">Buscar</button>
+      <button style="margin-left: 30px; margin-top:0px ; width: 120px;" type="button" class="btn btn-success"
+        (click)="llamarLecturas()">Buscar</button>
     </div>
   </div>
-<div class="espacio"></div>
+  <div class="espacio"></div>
   <h1>{{nombreEstacion}}</h1>
   <div class="row" style="width: 98%;">
     <div class="col-sm-7">
@@ -89,27 +92,27 @@
                 </tr>
                 <tr>
                   <th scope="row">ICA registrado:</th>
-                  <td>{{sumIca}}</td>
+                  <td>{{sumIca | number }}</td>
                 </tr>
                 <tr>
                   <th scope="row">monóxido de carbono:</th>
-                  <td>{{sumCo}}</td>
+                  <td>{{sumCo | number}}</td>
                 </tr>
                 <tr>
                   <th scope="row">dióxido de nitrogeno:</th>
-                  <td>{{sumCo2}}</td>
+                  <td>{{sumCo2 | number}}</td>
                 </tr>
                 <tr>
                   <th scope="row">Nivel de PM10:</th>
-                  <td>{{sumPm10}} ppm</td>
+                  <td>{{sumPm10 | number}} ppm</td>
                 </tr>
                 <tr>
                   <th scope="row">Nivel de PM2.5:</th>
-                  <td>{{sumPm25}} ppm</td>
+                  <td>{{sumPm25 | number}} ppm</td>
                 </tr>
                 <tr>
                   <th scope="row">Nivel de PM1.0:</th>
-                  <td>{{sumPm1}} ppm</td>
+                  <td>{{sumPm1 | number}} ppm</td>
                 </tr>
               </tbody>
             </table>

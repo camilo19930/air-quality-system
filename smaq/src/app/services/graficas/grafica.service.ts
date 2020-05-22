@@ -12,6 +12,7 @@ export class GraficaService {
   // private urlEndPoint = 'http://test.denkitronik.com/sistema.backend/api/estacion';
   private urlEndPoint = 'http://DESKTOP-8PA8V32:8080/sistema.backend_dispositivo-0.0.1-SNAPSHOT/api/dispositivo/';
   private urlEndPointLectura = 'http://192.168.43.125:8080/sistema.backend_dispositivo/api/lecturas';
+  private urlEndPointLectura2 = 'http://test.denkitronik.com/sistema.backend_dispositivo/api/lecturas';
                                 
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
@@ -33,12 +34,21 @@ export class GraficaService {
     return this.clienteHttp.get<Lectura>(`${this.urlEndPointLectura}/${id}`);
   }
 
+  // async obtenerDispositivos(){
+  //   let response = await this.clienteHttp.get(this.urlEndPoint).toPromise();
+  //   return  response;
+  // }
+  // async obtenerLecturas(id:any){
+  //   let response = await this.clienteHttp.get(this.urlEndPointLectura+'/'+id).toPromise();
+  //   // let response = this.clienteHttp.get<Lectura>(`${this.urlEndPointLectura}/${id}`);
+  //   return  response;
+  // }
   async obtenerDispositivos(){
     let response = await this.clienteHttp.get(this.urlEndPoint).toPromise();
     return  response;
   }
   async obtenerLecturas(id:any){
-    let response = await this.clienteHttp.get(this.urlEndPointLectura+'/'+id).toPromise();
+    let response = await this.clienteHttp.get(this.urlEndPointLectura2+'/'+id).toPromise();
     // let response = this.clienteHttp.get<Lectura>(`${this.urlEndPointLectura}/${id}`);
     return  response;
   }
