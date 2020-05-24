@@ -13,7 +13,7 @@
                     <div class="carousel-caption d-none d-md-block">
                         <h5 class="sub_titulo_img">Mapa de calidad del aire de Tulúa</h5>
                         <p>¿Quieres conocer la calidad del aire de la ciudad? </p>
-                        <p [routerLink]="['/mapa']" style="cursor:pointer;">Haz clic!</p>
+                        <p [routerLink]="['/mapa']" style="cursor:pointer;">Haz click!</p>
                    </div>
                 </div>
                 <div class="carousel-item">
@@ -21,14 +21,15 @@
                     <div class="carousel-caption d-none d-md-block">
                         <h5 class="sub_titulo_img">Contribuye con el medio ambiente</h5>
                         <p>Tú puedes ayudar a mejorar la calidad del aire que respiras simplemente toma conciencia</p>
+                        <p [routerLink]="['/educate']" style="cursor:pointer;">Haz click!</p>
                    </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="assets/img/cielo2.jpg" class="d-block w-100" alt="...">
+                    <img src="assets/img/cielo.jpg" class="d-block w-100" alt="...">
                     <div class="carousel-caption d-none d-md-block">
                         <h5 class="sub_titulo_img">Mapa de calidad del aire de Tulúa</h5>
                         <p>¿Quieres conocer la calidad del aire de la ciudad?</p>
-                        <p>Haz clic!</p>
+                        <p [routerLink]="['/mapa']" style="cursor:pointer;">Haz click!</p>
                     </div>
                 </div>
             </div>
@@ -51,7 +52,7 @@
             <img src="assets/img/enfermedades.jpg" class="card-img-top" alt="..." id="imgResumen">
             <div class="card-body">
                 <h5 class="card-title">{{titEnfer}}</h5>
-                <p class="card-text">{{textEnfer}}</p>
+                <p class="card-text" style="text-align : justify;">{{textEnfer}}</p>
                 <a routerLink="/educate" class="btn btn-success">Leer más</a>
                 <!--<a href="/educate#articulo1" class="btn btn-success">Leer más</a>-->
 
@@ -62,7 +63,7 @@
                 <img src="assets/img/trafico1.jpg" class="card-img-top" alt="..." id="imgResumen">
                    <article class="card-body">
                     <h5 class="card-title">{{titCont}}</h5>
-                    <p class="card-text">{{textCont}}</p>
+                    <p class="card-text" style="text-align : justify;">{{textCont}}</p>
                     <!--<a href="/educate#articulo2" class="btn btn-success">Leer más</a>-->
                     <a routerLink="/educate" class="btn btn-success">Leer más</a>
                 </article>
@@ -71,7 +72,7 @@
             <img src="assets/img/biblioteca_dia.jpeg" class="card-img-top" alt="..." id="imgResumen">
            <article class="card-body">
                 <h5 class="card-title">{{titTra}}</h5>
-                <p class="card-text">{{textTra}}</p>
+                <p class="card-text" style="text-align : justify;">{{textTra}}</p>
                 <a routerLink="/educate" class="btn btn-success">Leer más</a>
                <!--<a href="/educate#articulo3" class="btn btn-success">Leer más</a>-->
             </article>
@@ -86,7 +87,7 @@
         <div class="col-sm-6" >
             <div class="card">
                 <div class="card-body">
-                    <img src="assets/img/biblioteca.jpeg" alt="..." class="img-thumbnail">
+                    <img src="assets/img/dispositivoPrincipal.jpeg" alt="..." class="img-thumbnail">
                 </div>
             </div>
         </div>
@@ -94,9 +95,9 @@
             <div class="card">
                 <div class="card-body">
                     <h5>{{titDesc}}</h5>
-                    <p>{{textDesc1}}</p>
-                    <p>{{textDesc2}}</p>
-                    <p>{{textDesc3}}</p>
+                    <p style="text-align : justify;">{{textDesc1}}</p>
+                    <p style="text-align : justify;">{{textDesc2}}</p>
+                    <p style="text-align : justify;">{{textDesc3}}</p>
                 </div>
             </div>
         </div>

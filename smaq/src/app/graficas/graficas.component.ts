@@ -345,9 +345,9 @@ export class GraficasComponent implements OnInit {
     this.estacionSeleccionada = this.estacionesValidas[(this.opcionEstacion-2)];
     this.nombreEstacion = this.estacionSeleccionada.descripcion;
     if((this.opcionEstacion-2)==0){
-    this,this.ubicacion  ='calle 27#34-45';  // estacion 0 salida sur
+    this,this.ubicacion  = 'carrera 40 con calle ';  // estacion 0 salida sur
     }else {
-      this,this.ubicacion  ='calle 33#34-35'; // estacion 1 centro
+      this,this.ubicacion  = 'calle 27 con carrera 36'; // estacion 1 centro
     }
     if ((this.opcionEstacion - 1) != 0) {
       this.graficoEstacionEspecifica();

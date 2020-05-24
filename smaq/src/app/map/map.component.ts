@@ -54,7 +54,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.colorCalidad = "";
     this.flecha = "assets/img/cerrar.png";
     this.opc_btn_flecha = "assets/img/cerrar.png";
-    this.cambioImagen = "assets/img/tablaPdf.png";
+    this.cambioImagen = "assets/img/tablaColoresFinal.jpg";
     // opciones popup
 
     //Código que permite la suscripción a un topic MQTT usando los datos de la conexión establecidos en app.module usando reactive
@@ -319,11 +319,12 @@ export class MapComponent implements OnInit, OnDestroy {
   /**
    *  Este metodo me permite cambiar la imagen del visor de imagenes inferior  izquierdo
    */
-  public cambioImagenInfo() {
-    if (this.cambioImagen == "assets/img/tablaPdf.png") {
-      this.cambioImagen = "assets/img/tabla.png";
+   public cambioImagenInfo() {
+    if (this.cambioImagen == "assets/img/tablaColoresFinal2.jpg") {
+      this.cambioImagen = "assets/img/tablaColoresFinal.jpg";
     } else {
-      this.cambioImagen = "assets/img/tabla.png";
+      this.cambioImagen = "assets/img/tablaColoresFinal2.jpg";
     }
   }
+
 }
