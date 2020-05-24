@@ -32,8 +32,8 @@ export class GraficasComponent implements OnInit {
   public barChartData: ChartDataSets[];
   public codigoEstacion: any;
   //datos dumy
-  public nombreEstacion: any = ' Los Olivos';
-  public ubicacion: any = 'calle 27#34-45';
+  public nombreEstacion: any;
+  public ubicacion: any;
   //ejemplo
   public titulo: string = 'Generar PDF con Angular JS 5';
   public barChartPlugins = [];
@@ -42,7 +42,7 @@ export class GraficasComponent implements OnInit {
   public sumPm25 = 0;
   public sumPm10 = 0;
   public sumCo = 0;
-  public sumCo2:number = 0;
+  public sumCo2: number = 0;
   public sumIca = 0;
   public contadorIteracion: number = 0;
   public fechaDesde = '2019-01-01';
@@ -53,9 +53,9 @@ export class GraficasComponent implements OnInit {
   public imagenReporte: ImagenesReportes;
 
   constructor(private estacionService: EstacionService, private graficaService: GraficaService,
-    private decimalPipe: DecimalPipe,) {
+    private decimalPipe: DecimalPipe, ) {
     this.opcionEstacion = 0;
-    this.nombreEstacion = 'Todas Las Estaciones';
+    this.nombreEstacion;
     this.imagenReporte = new ImagenesReportes();
   }
 
@@ -180,7 +180,7 @@ export class GraficasComponent implements OnInit {
   }
 
   obtenerArrayPrueba() {
-    this.pruebaArray.forEach((element, index) => {      
+    this.pruebaArray.forEach((element, index) => {
       let fechaElem = element.fecha.slice(6, 10) + '-' + element.fecha.slice(3, 5) + '-' + element.fecha.slice(0, 2);
       if (fechaElem >= this.fechaDesde && fechaElem <= this.fechaHasta) {
         this.llenarArrayFechas(element.fecha);
@@ -194,12 +194,20 @@ export class GraficasComponent implements OnInit {
     if (this.fechaDesde == undefined || this.fechaHasta == undefined) {
       alert('Debe seleccionar el rango de fehcas');
     } else {
-      this.fechas = [];
-      this.pruebaArray = [];
-      this.sumIca = 0;
+      this.reiniciarVariables();
       await this.obtenerLecturas();
       this.crearGrafica();
     }
+  }
+  reiniciarVariables() {
+    this.sumCo2 = 0;
+    this.sumCo = 0;
+    this.sumPm10 = 0;
+    this.sumPm1 = 0;
+    this.sumPm25 = 0;
+    this.fechas = [];
+    this.pruebaArray = [];
+    this.sumIca = 0;
   }
 
   desarmarFiltro(filtro, codigoDispositivo, fecha) {
@@ -233,7 +241,7 @@ export class GraficasComponent implements OnInit {
       if (i > 0) {
         acumValor = this.fechas[i].totalPorcentICA;
         this.fechas[i].sumaTotal = (this.fechas[i - 1].totalPorcentICA - this.fechas[i].totalPorcentICA) * (-1);
-        
+
       } else {
         this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
       }
@@ -262,11 +270,11 @@ export class GraficasComponent implements OnInit {
           this.sumIca += parseInt(element.nom[2]);
           a = this.fechas.find(option => option.id == element.fecha.slice(3, 5));
           if (a != undefined) {
-          this.fechas.forEach(element => {
-            if (element.id == a.id) {
-            element.totalPorcentICA = this.sumIca;
-            } 
-          });
+            this.fechas.forEach(element => {
+              if (element.id == a.id) {
+                element.totalPorcentICA = this.sumIca;
+              }
+            });
           }
           break;
         case 'pm1':
@@ -296,14 +304,6 @@ export class GraficasComponent implements OnInit {
     }
   }
 
-  recibirFecha(tipoFecha) {
-    if (tipoFecha == 'desde') {
-      // console.log('fecha desde: ', this.fechaDesde);
-    } else {
-      // console.log('fecha Hasta: ', this.fechaHasta);
-    }
-
-  }
   async obtenerLecturas() {
     let respuesta;
     respuesta = await this.graficaService.obtenerLecturas(this.opcionEstacion-1)
@@ -318,7 +318,7 @@ export class GraficasComponent implements OnInit {
 
   async obtenerLecturasInicial() {
     let respuesta;
-    this.opcionEstacion = 1;
+    this.opcionEstacion = 2;
     respuesta = await this.graficaService.obtenerLecturas(1)
       .then((res) => {
         this.lecturas = res;
@@ -326,16 +326,8 @@ export class GraficasComponent implements OnInit {
       }).catch((error) => {
         console.log(error);
       });
-      respuesta = await this.graficaService.obtenerLecturas(2)
-      .then((res) => {
-        this.lecturas = res;
-        this.lecturas.forEach(element => {
-          this.pruebaArray.push(element);
-        });
-        this.obtenerArrayPrueba();
-      }).catch((error) => {
-        console.log(error);
-      });
+      this.lecturas = null;
+    this.obtenerArrayPrueba();
   }
 
   async obtenerDispositivos() {
@@ -350,8 +342,13 @@ export class GraficasComponent implements OnInit {
 
   public crearGrafica() {
     this.cantidadFechas();
-    this.estacionSeleccionada = this.estacionesValidas[(this.opcionEstacion - 1)];
+    this.estacionSeleccionada = this.estacionesValidas[(this.opcionEstacion-2)];
     this.nombreEstacion = this.estacionSeleccionada.descripcion;
+    if((this.opcionEstacion-2)==0){
+    this,this.ubicacion  ='calle 27#34-45';  // estacion 0 salida sur
+    }else {
+      this,this.ubicacion  ='calle 33#34-35'; // estacion 1 centro
+    }
     if ((this.opcionEstacion - 1) != 0) {
       this.graficoEstacionEspecifica();
     } else {
@@ -393,7 +390,6 @@ export class GraficasComponent implements OnInit {
     let arrayValores = [];
     this.fechas.forEach(element => {
       array.push(element.nombre);
-      console.log('Porcentaje: ', element.sumaTotal ,' / ', element.totalRegistros);
       arrayValores.push(element.sumaTotal / element.totalRegistros);
     });
     this.barChartLabels = array;
@@ -436,9 +432,9 @@ export class GraficasComponent implements OnInit {
     var doc = new jsPDF("p", 'mm', [800, 590]);
     var header = 'INFORME DE ESTACIONES SMAQ';
     var fecha = new Date();
-    
+
     var footer = 'Para mayor información ingrese a: www.smaq.com';
-    let codEstacion: string = this.estacionesValidas[this.opcionEstacion -1].descripcion;
+    let codEstacion: string = this.estacionesValidas[this.opcionEstacion - 1].descripcion;
     let lecturaPromedioCo: string = (this.sumCo.toFixed(3)).toString();
     let lecturaPromedioCo2: string = (this.sumCo2.toFixed(3)).toString();
     let lecturaPromedioPm1: string = (this.sumPm1.toFixed(3)).toString();

@@ -25,7 +25,7 @@ export class MapComponent implements OnInit, OnDestroy {
   public ecuacion: any = 300000;
   private map; ///< Atributo que representa el mapa
   //private marcador;                   ///< Marcador de ejemplo
-  private popup; ///< Popup del marcador de ejemplo
+  //private popup; ///< Popup del marcador de ejemplo
   private subscription: Subscription; ///< Suscripción al topic MQTT
   private msg: any; ///< Guarda el mensaje recibido del topic seleccionado
   public colorCalidad: string;
@@ -33,11 +33,14 @@ export class MapComponent implements OnInit, OnDestroy {
   public opc_btn_flecha: string;
   public cambioImagen: string;
   //info del sensor
-  public lecturaCo:any;
-  public lecturaCo2:any;
-  public lecturaPm1:any;
-  public lecturaPm25:any;
-  public lecturaPm10:any;
+  public lecturaCo: any;
+  public lecturaCo2: any;
+  public lecturaPm1: any;
+  public lecturaPm25: any;
+  public lecturaPm10: any;
+  public dioxidoNitrogeno: any;
+  public ica: any;
+  public volatiles: any
   constructor(
     private estacionService: EstacionService,
     private _mqttService: MqttService,
@@ -61,21 +64,22 @@ export class MapComponent implements OnInit, OnDestroy {
         console.log("Llegó el mensaje: " + message.payload.toString());
         try {
           this.msg = JSON.parse(message.payload.toString());
+          console.log('MENSAJE ', this.msg);
           this.seleccionarColor(this.msg);
 
-          this.popup.setContent("<p>" + this.msg.pm25 + "</p>").update();
+          // this.popup.setContent("<p>" + this.msg.aqi + "</p>").update();
         } catch (e) {
           console.log("Error el JSON recibido del servidor no es valido");
         }
       });
   }
 
-   /*
-  Metodo para seleccionar el color del marcador de acuerdo a la lectura recibida
-  */
+  /*
+ Metodo para seleccionar el color del marcador de acuerdo a la lectura recibida
+ */
   public seleccionarColor(indiceGeneral) {
     this.llenarLecturas(indiceGeneral);
-    var indice = indiceGeneral.pm25;
+    var indice = indiceGeneral.aqi;
     if (indice >= 0 && indice <= 50) {
       this.colorCalidad = " #15cf20";
     } else {
@@ -95,7 +99,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 this.colorCalidad = "#f90303";
               } if (indice >= 301 && indice <= 500) {
                 this.colorCalidad = "#7e03f9";
-              }else{
+              } else {
                 this.colorCalidad = "#9c9c9c";
                 console.log("Color gris =  	Estacion desactivada ");
               }
@@ -110,71 +114,70 @@ export class MapComponent implements OnInit, OnDestroy {
     let latitud: string;
     let i: number = 0;
     for (let estacion of this.estaciones) {
-      if(this.estaciones[i].estado == false){
+      if (this.estaciones[i].estado == false) {
         i++;
-      }else{
-      latitud = estacion.ubicacion.substring(0, 8);
-      longitud = estacion.ubicacion.substring(9, 20);
-      var myIcon = L.divIcon({
-        html:
-          '<div style= " margin: -5px 0px 0px 0px; width: 40px; height: 40px; background:#c1c1c1; border: 5px solid transparent; border-radius:30px; aling-content:center;"><div class="DivMarker" style="background:' +
-          this.colorCalidad +
-          '; margin:auto; border: 4px solid white; width: 30px; height: 30px; border-radius: 26px; aling-content:center;"><p style=" margin-top:3px; margin-left:5px; font-size:10px; font-weight: bold; width: 45px;">' +
-          indice +
-          "</p></div></div>",
-        className: "my-div-icon"
-      });
-      var marker = L.marker([latitud, longitud], { icon: myIcon })
-        .addTo(this.map)
-        .bindPopup(this.popup);
-      
-        marker.on("click", function(e) {
-        //obtengo la etiqueta del html y la sobre escribo con los valores que llegan por mqtt
-        /**Llenar informacion especifica */
-        document.getElementById("tablaDetallada").style.display = 'block';
-        var nomEstacion= document.getElementById("nomEstacion");
-        var fechaInstall = document.getElementById("fechaInstall");
-        var coordenadas = document.getElementById("coordenadas");
-        nomEstacion.innerHTML="Estación " +  estacion.descripcion;
-        fechaInstall.innerHTML= "Fecha Instalación: " +estacion.fechaInstalacion;
-        coordenadas.innerHTML = "Ubicación: "+estacion.ubicacion;
-        var imagenEstacion = document.getElementById("imagenEstacion");
-        
-        if(estacion.id ==2){
-          imagenEstacion.setAttribute("src","assets/img/biblioteca.jpeg");
-        }else{
-          imagenEstacion.setAttribute("src","assets/img/iglesia.jpeg");
+      } else {
+        latitud = estacion.ubicacion.substring(0, 8);
+        longitud = estacion.ubicacion.substring(9, 20);
+        var myIcon = L.divIcon({
+          html:
+            '<div style= " margin: -5px 0px 0px 0px; width: 40px; height: 40px; background:#c1c1c1; border: 5px solid transparent; border-radius:30px; aling-content:center;"><div class="DivMarker" style="background:' +
+            this.colorCalidad +
+            '; margin:auto; border: 4px solid white; width: 30px; height: 30px; border-radius: 26px; aling-content:center;"><p style=" margin-top:3px; margin-left:5px; font-size:10px; font-weight: bold; width: 45px;">' +
+            indice +
+            "</p></div></div>",
+          className: "my-div-icon"
+        });
+        var marker = L.marker([latitud, longitud], { icon: myIcon })
+          .addTo(this.map);
+        // .addTo(this.map)
+        // .bindPopup(this.popup);
+
+        marker.on("click", function (e) {
+          //obtengo la etiqueta del html y la sobre escribo con los valores que llegan por mqtt
+          /**Llenar informacion especifica */
+          document.getElementById("tablaDetallada").style.display = 'block';
+          var nomEstacion = document.getElementById("nomEstacion");
+          var fechaInstall = document.getElementById("fechaInstall");
+          var coordenadas = document.getElementById("coordenadas");
+          nomEstacion.innerHTML = "Estación " + estacion.descripcion;
+          fechaInstall.innerHTML = "Fecha Instalación: " + estacion.fechaInstalacion;
+          coordenadas.innerHTML = "Ubicación: " + estacion.ubicacion;
+          var imagenEstacion = document.getElementById("imagenEstacion");
+
+          if (estacion.id == 2) {
+            imagenEstacion.setAttribute("src", "assets/img/estacionSalidaSur.JPG");
+          } else {
+            imagenEstacion.setAttribute("src", "assets/img/estacionCentro.JPG");
+          }
         }
+        );
+
+        i++;
       }
-    );
-    
-  i++;}}
+    }
   }
 
 
-  llenarLecturas(indiceGeneral){
-    this.lecturaCo = indiceGeneral.pm1;
-    this.lecturaCo2 = indiceGeneral.pm10;
+  llenarLecturas(indiceGeneral) {
+    this.ica = indiceGeneral.aqi;
+    this.lecturaCo = indiceGeneral.avg_1h_co;
+    this.lecturaCo2 = indiceGeneral.avg_1h_eco2;
     this.lecturaPm1 = indiceGeneral.pm1;
-    this.lecturaPm25 = indiceGeneral.pm25;
-    this.lecturaPm10 = indiceGeneral.pm10;
-    }
-    
-    llenarEstacion(estacion){
-      console.log('ESTACION SELECCIONADA ',estacion);
-    }
+    this.lecturaPm25 = indiceGeneral.aqi_pm25_24h;
+    this.lecturaPm10 = indiceGeneral.aqi_pm10_24h;
+    this.dioxidoNitrogeno = indiceGeneral.avg_1h_no2;
+    this.volatiles = indiceGeneral.avg_1h_tvoc;
+  }
   /**
    * Método que genera el mapa LeafLet en el componente map
    */
   public generarMapa() {
     //Renderizamos el mapa en el centro de la ciudad de Tulua
     this.map = L.map("map").setView([4.071871, -76.178937], 13);
-    //todo Revisar si el campo "ubicacion" se puede modificar para que almacene un JSON
-    // Profe yo creo que no habría ningún problema ya que ubicación es un string
-    //Variables usadas para almacenar la localizacion de cada estacion recibidas en formato JSON
-    this.popup = L.popup().setContent(
-      "<p>Adquiriendo datos<br />Conectándose al sistema.</p>"
-    );
+    // this.popup = L.popup().setContent(
+    //   "<p>Adquiriendo datos<br />Conectándose al sistema.</p>"
+    // );
     //Créditos para los desarrolladores
     //@todo faltamos nosotros
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -183,23 +186,21 @@ export class MapComponent implements OnInit, OnDestroy {
     }).addTo(this.map);
     this.map.scrollWheelZoom.disable(); // deshabilita el zoom por medio del scroll
   }
-
-  /**
-   * Método que se ejecuta cuando se inicializa el ciclo de vida de ng
-   */
-  ngOnInit() {
+  async ngOnInit() {
+    await this.obtenerEstaciones();
+    this.tamañoPantalla();
+  }
+  async obtenerEstaciones() {
     this.estacionService.getEstaciones().subscribe(estaciones => {
       console.log("Datos recibidos ::: ", JSON.stringify(estaciones));
       this.estaciones = estaciones;
       this.generarMapa();
-      //todo Usando este código de ejemplo aplicarlo a cada estacion (podría ser barriendo el arreglo de estaciones)
     });
-   this.tamañoPantalla();
   }
   public tamañoPantalla() {
     var ancho = screen.width;
     var contInfoCel = document.getElementById("contenedor_informacion");
-    if(ancho <= 400) {
+    if (ancho <= 400) {
       contInfoCel.style.width = "0px";
       this.flecha = "assets/img/abrir.png";
       this.opc_btn_flecha = "assets/img/abrir.png";
@@ -291,10 +292,10 @@ export class MapComponent implements OnInit, OnDestroy {
     var informacion_detallada = document.getElementById(
       "informacion_detallada"
     );
-    
+
     if (opc == 1) {
-      btn_info_especifica.style.background ="white";
-      btn_info_general.style.background ="rgba(3, 3, 3,0.5)";
+      btn_info_especifica.style.background = "white";
+      btn_info_general.style.background = "rgba(3, 3, 3,0.5)";
       informacion_general.style.width = "350px";
       informacion_general.style.height = "80%";
       informacion_general.style.visibility = "visible";
@@ -303,8 +304,8 @@ export class MapComponent implements OnInit, OnDestroy {
       informacion_detallada.style.height = "0%";
       informacion_detallada.style.visibility = "hidden";
     } else {
-      btn_info_general.style.background ="white";
-      btn_info_especifica.style.background ="rgba(3, 3, 3,0.5)";
+      btn_info_general.style.background = "white";
+      btn_info_especifica.style.background = "rgba(3, 3, 3,0.5)";
       informacion_detallada.style.width = "350px";
       informacion_detallada.style.height = "80%";
       informacion_detallada.style.visibility = "visible";
@@ -322,8 +323,7 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.cambioImagen == "assets/img/tablaPdf.png") {
       this.cambioImagen = "assets/img/tabla.png";
     } else {
-      this.cambioImagen = "assets/img/tabla.png"; 
+      this.cambioImagen = "assets/img/tabla.png";
     }
   }
 }
- 
