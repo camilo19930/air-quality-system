@@ -50,6 +50,12 @@ export class GraficasComponent implements OnInit {
   public pruebaArray = [];
   public fechas: any = [];
   public contMes = 0;
+  contadorPm1 = 0
+  contadorPm25 = 0
+  contadorPm10 = 0;
+  contadorIca = 0;
+  contadorCo = 0;
+  contadorCo2 = 0;
   public imagenReporte: ImagenesReportes;
 
   constructor(private estacionService: EstacionService, private graficaService: GraficaService,
@@ -200,6 +206,13 @@ export class GraficasComponent implements OnInit {
     }
   }
   reiniciarVariables() {
+    this.contadorPm1 = 0
+    this.contadorPm25 = 0
+    this.contadorPm10 = 0;
+    this.contadorIca = 0;
+    this.contadorCo = 0;
+    this.contadorCo2 = 0;
+    this.contadorIteracion = 0;
     this.sumCo2 = 0;
     this.sumCo = 0;
     this.sumPm10 = 0;
@@ -213,25 +226,10 @@ export class GraficasComponent implements OnInit {
   desarmarFiltro(filtro, codigoDispositivo, fecha) {
     let nomAgente = '';
     let codigoAscci;
+    let filtroEnviar;
     let arrayOK = [];
-    for (let i = 0; i < filtro.length; i++) {
-      if (filtro.charCodeAt(i) != 10 && filtro.charCodeAt(i) != 9 && filtro.charCodeAt(i) != 32 && filtro.charCodeAt(i) != 125
-        && filtro.charCodeAt(i) != 123) {
-        codigoAscci = filtro.charCodeAt(i);
-        if ((codigoAscci >= 97 && codigoAscci <= 122) || codigoAscci == 58 || codigoAscci == 44 || (codigoAscci >= 48 && codigoAscci <= 57)) {
-          if (codigoAscci != 44) {
-            if (filtro.charAt(i) != undefined) {
-              nomAgente += filtro.charAt(i);
-            }
-          } else {
-            if (filtro.charAt(i) != undefined) {
-              arrayOK.push({ nom: nomAgente.split(':'), fecha: fecha });
-              nomAgente = '';
-            }
-          }
-        }
-      }
-    }
+    filtroEnviar = filtro.replace('}', '').replace('{', '');
+    arrayOK.push({ nom: filtroEnviar.split(':'), fecha: fecha });
     this.sumarLecturas(arrayOK);
   }
 
@@ -241,7 +239,6 @@ export class GraficasComponent implements OnInit {
       if (i > 0) {
         acumValor = this.fechas[i].totalPorcentICA;
         this.fechas[i].sumaTotal = (this.fechas[i - 1].totalPorcentICA - this.fechas[i].totalPorcentICA) * (-1);
-
       } else {
         this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
       }
@@ -252,22 +249,25 @@ export class GraficasComponent implements OnInit {
     let cont = 0;
     this.fechas.forEach(element => {
       this.pruebaArray.forEach(element2 => {
-        if (element2.fecha.slice(3, 5) == element.id) {
-          cont++;
-        }
+        if(element2.lectura.replace('}', '').replace('{', '').split(':')[0] == 'ica'){
+          if (element2.fecha.slice(3, 5) == element.id) {
+            cont++;
+          }
+        }        
       });
       element.totalRegistros = cont;
       cont = 0;
     });
   }
 
-  private sumarLecturas(data: any) { //ACA ESTOY/////////////////////////////////
+  private sumarLecturas(data: any) { 
     let a;
     this.contadorIteracion++;
     data.forEach((element, index) => {
       switch (element.nom[0]) {
-        case 'lectura':
-          this.sumIca += parseInt(element.nom[2]);
+        case 'ica':
+          this.contadorIca++;
+          this.sumIca += parseInt(element.nom[1]);
           a = this.fechas.find(option => option.id == element.fecha.slice(3, 5));
           if (a != undefined) {
             this.fechas.forEach(element => {
@@ -278,35 +278,40 @@ export class GraficasComponent implements OnInit {
           }
           break;
         case 'pm1':
+          this.contadorPm1++;
           this.sumPm1 += parseInt(element.nom[1]);
           break;
         case 'pm25':
+          this.contadorPm25++;
           this.sumPm25 += parseInt(element.nom[1]);
           break;
         case 'pm10':
+          this.contadorPm10++;
           this.sumPm10 += parseInt(element.nom[1]);
           break;
         case 'co':
+          this.contadorCo++;
           this.sumCo += parseInt(element.nom[1]);
           break;
         case 'co2':
+          this.contadorCo2++;
           this.sumCo2 += parseInt(element.nom[1]);
           break;
       }
     });
-    if (this.contadorIteracion == this.pruebaArray.length) {
-      this.sumCo2 = (this.sumCo2 / this.pruebaArray.length);
-      this.sumCo = this.sumCo / this.pruebaArray.length;
-      this.sumPm10 = this.sumPm10 / this.pruebaArray.length;
-      this.sumPm1 = this.sumPm1 / this.pruebaArray.length;
-      this.sumPm25 = this.sumPm25 / this.pruebaArray.length;
-      this.sumIca = this.sumIca / this.pruebaArray.length;
+    if (this.contadorIteracion == (this.pruebaArray.length - 30)) {// BORRAR EL - 30 IMPORTANTE !!!!!!!!!!!!!!!!!!!!!
+      this.sumCo2 = (this.sumCo2 / this.contadorCo2);
+      this.sumCo = this.sumCo / this.contadorCo;
+      this.sumPm10 = this.sumPm10 / this.contadorPm10;
+      this.sumPm1 = this.sumPm1 / this.contadorPm1;
+      this.sumPm25 = this.sumPm25 / this.contadorPm25;
+      this.sumIca = this.sumIca / this.contadorIca;
     }
   }
 
   async obtenerLecturas() {
     let respuesta;
-    respuesta = await this.graficaService.obtenerLecturas(this.opcionEstacion-1)
+    respuesta = await this.graficaService.obtenerLecturas(this.opcionEstacion - 1)
       .then((res) => {
         this.lecturas = res;
         this.pruebaArray = this.lecturas;
@@ -326,7 +331,7 @@ export class GraficasComponent implements OnInit {
       }).catch((error) => {
         console.log(error);
       });
-      this.lecturas = null;
+    this.lecturas = null;
     this.obtenerArrayPrueba();
   }
 
@@ -342,12 +347,12 @@ export class GraficasComponent implements OnInit {
 
   public crearGrafica() {
     this.cantidadFechas();
-    this.estacionSeleccionada = this.estacionesValidas[(this.opcionEstacion-2)];
+    this.estacionSeleccionada = this.estacionesValidas[(this.opcionEstacion - 2)];
     this.nombreEstacion = this.estacionSeleccionada.descripcion;
-    if((this.opcionEstacion-2)==0){
-    this,this.ubicacion  = 'carrera 40 con calle ';  // estacion 0 salida sur
-    }else {
-      this,this.ubicacion  = 'calle 27 con carrera 36'; // estacion 1 centro
+    if ((this.opcionEstacion - 2) == 0) {
+      this, this.ubicacion = 'carrera 40 con calle ';  // estacion 0 salida sur
+    } else {
+      this, this.ubicacion = 'calle 27 con carrera 36'; // estacion 1 centro
     }
     if ((this.opcionEstacion - 1) != 0) {
       this.graficoEstacionEspecifica();
