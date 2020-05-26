@@ -21,8 +21,6 @@ export class MapComponent implements OnInit, OnDestroy {
   public opcionEstacion: string;
   public opcionContaminante: string;
   public rutaImg: string;
-  public co: any = 20;
-  public ecuacion: any = 300000;
   private map; ///< Atributo que representa el mapa
   //private marcador;                   ///< Marcador de ejemplo
   //private popup; ///< Popup del marcador de ejemplo
@@ -79,7 +77,7 @@ export class MapComponent implements OnInit, OnDestroy {
  */
   public seleccionarColor(indiceGeneral) {
     this.llenarLecturas(indiceGeneral);
-    var indice = indiceGeneral.aqi;
+    var indice = indiceGeneral.ica;
     if (indice >= 0 && indice <= 50) {
       this.colorCalidad = " #15cf20";
     } else {
@@ -161,12 +159,12 @@ export class MapComponent implements OnInit, OnDestroy {
 
   llenarLecturas(indiceGeneral) {
     this.ica = indiceGeneral.aqi;
-    this.lecturaCo = indiceGeneral.avg_1h_co;
-    this.lecturaCo2 = indiceGeneral.avg_1h_eco2;
+    this.lecturaCo = indiceGeneral.co;
+    this.lecturaCo2 = indiceGeneral.co2;
     this.lecturaPm1 = indiceGeneral.pm1;
     this.lecturaPm25 = indiceGeneral.aqi_pm25_24h;
     this.lecturaPm10 = indiceGeneral.aqi_pm10_24h;
-    this.dioxidoNitrogeno = indiceGeneral.avg_1h_no2;
+    this.dioxidoNitrogeno = indiceGeneral.no2;
     this.volatiles = indiceGeneral.avg_1h_tvoc;
   }
   /**

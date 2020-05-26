@@ -299,7 +299,7 @@ export class GraficasComponent implements OnInit {
           break;
       }
     });
-    if (this.contadorIteracion == (this.pruebaArray.length - 30)) {// BORRAR EL - 30 IMPORTANTE !!!!!!!!!!!!!!!!!!!!!
+    if (this.contadorIteracion == this.pruebaArray.length) {
       this.sumCo2 = (this.sumCo2 / this.contadorCo2);
       this.sumCo = this.sumCo / this.contadorCo;
       this.sumPm10 = this.sumPm10 / this.contadorPm10;
@@ -445,6 +445,7 @@ export class GraficasComponent implements OnInit {
     let lecturaPromedioPm1: string = (this.sumPm1.toFixed(3)).toString();
     let lecturaPromedioPm25: string = (this.sumPm25.toFixed(3)).toString();
     let lecturaPromedioPm10: string = (this.sumPm10.toFixed(3)).toString();
+    let lecturaPromedioICA: string = (this.sumIca.toFixed(3)).toString();
     let posicionX: number = 100;
     let posicionY: number = 70;
 
@@ -519,16 +520,18 @@ export class GraficasComponent implements OnInit {
       doc.setTextColor(3, 3, 3);  //Color de letra
       doc.text('Nombre estación: ', 110, 120);
       doc.text(codEstacion, 152, 120);
-      doc.text('lectura Promedio Co: ', 110, 127);
-      doc.text(lecturaPromedioCo, 152, 127);
-      doc.text('lectura Promedio Co2: ', 110, 134);
-      doc.text(lecturaPromedioCo2, 152, 134);
-      doc.text('lectura Promedio Pm1: ', 110, 141);
-      doc.text(lecturaPromedioPm1, 152, 141);
-      doc.text('lectura Promedio Pm25: ', 110, 148);
-      doc.text(lecturaPromedioPm25, 152, 148);
+      doc.text('lectura Promedio ICA: ', 110, 127);
+      doc.text(lecturaPromedioICA, 152, 127);
+      doc.text('lectura Promedio Co: ', 110, 134);
+      doc.text(lecturaPromedioCo, 152, 134);
+      doc.text('lectura Promedio Co2: ', 110, 141);
+      doc.text(lecturaPromedioCo2, 152, 141);
+      doc.text('lectura Promedio Pm1: ', 110, 148);
+      doc.text(0.000, 152, 148);
       doc.text('lectura Promedio Pm25: ', 110, 155);
-      doc.text(lecturaPromedioPm10, 152, 155);
+      doc.text(lecturaPromedioPm25, 152, 155);
+      doc.text('lectura Promedio Pm25: ', 110, 162);
+      doc.text(lecturaPromedioPm10, 152, 162);
       //info lecturas
       //titulo colores contaminacion
       doc.setFontSize(8);
