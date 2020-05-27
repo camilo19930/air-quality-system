@@ -56,6 +56,7 @@ export class GraficasComponent implements OnInit {
   contadorIca = 0;
   contadorCo = 0;
   contadorCo2 = 0;
+  contadoGlobal = 0;
   public imagenReporte: ImagenesReportes;
 
   constructor(private estacionService: EstacionService, private graficaService: GraficaService,
@@ -206,6 +207,7 @@ export class GraficasComponent implements OnInit {
     }
   }
   reiniciarVariables() {
+    this.contadoGlobal = 0;
     this.contadorPm1 = 0
     this.contadorPm25 = 0
     this.contadorPm10 = 0;
@@ -235,32 +237,54 @@ export class GraficasComponent implements OnInit {
 
   sumaIca() {
     let acumValor = 0;
-    for (let i = 0; i < this.fechas.length; i++) {
-      if (i > 0) {
-        acumValor = this.fechas[i].totalPorcentICA;
-        this.fechas[i].sumaTotal = (this.fechas[i - 1].totalPorcentICA - this.fechas[i].totalPorcentICA) * (-1);
-      } else {
-        this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
+    if (this.pruebaArray[this.contadoGlobal] != undefined) {
+      // console.log('Impre: ', this.pruebaArray[this.contadoGlobal].fecha.slice(3, 5));
+      // console.log(this.fechas);
+
+
+      for (let i = 0; i < this.fechas.length; i++) {
+        if (this.fechas[i].id == this.pruebaArray[this.contadoGlobal].fecha.slice(3, 5)) {
+          // if(this.fechas.id == 5){
+            console.log('entroooo:')
+            if (i > 0) {
+              acumValor = this.fechas[i].totalPorcentICA;
+              this.fechas[i].sumaTotal = (this.fechas[i - 1].totalPorcentICA - this.fechas[i].totalPorcentICA) * (-1);
+            } else {
+              this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
+            }
+          // }
+          // if (i > 0) {
+          //   acumValor = this.fechas[i].totalPorcentICA;
+          //   this.fechas[i].sumaTotal = (this.fechas[i - 1].totalPorcentICA - this.fechas[i].totalPorcentICA) * (-1);
+          // } else {
+          //   this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
+          // }
+        }
       }
+      //////////
+    } else {
+      console.log('error');
     }
+    this.contadoGlobal++;
+    // console.log('FECHAS: ',this.fechas);
   }
 
   cantidadFechas() {
     let cont = 0;
     this.fechas.forEach(element => {
       this.pruebaArray.forEach(element2 => {
-        if(element2.lectura.replace('}', '').replace('{', '').split(':')[0] == 'ica'){
+        if (element2.lectura.replace('}', '').replace('{', '').split(':')[0] == 'ica') {
           if (element2.fecha.slice(3, 5) == element.id) {
             cont++;
           }
-        }        
+        }
       });
       element.totalRegistros = cont;
       cont = 0;
     });
   }
 
-  private sumarLecturas(data: any) { 
+  private sumarLecturas(data: any) {
     let a;
     this.contadorIteracion++;
     data.forEach((element, index) => {
@@ -269,10 +293,13 @@ export class GraficasComponent implements OnInit {
           this.contadorIca++;
           this.sumIca += parseInt(element.nom[1]);
           a = this.fechas.find(option => option.id == element.fecha.slice(3, 5));
+
           if (a != undefined) {
+            // console.log('BUSQUEDA: ',a.id);
             this.fechas.forEach(element => {
               if (element.id == a.id) {
                 element.totalPorcentICA = this.sumIca;
+                // console.log('totalPorcentajeICA: ',element.totalPorcentICA);
               }
             });
           }
