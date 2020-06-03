@@ -57,6 +57,7 @@ export class GraficasComponent implements OnInit {
   contadorCo = 0;
   contadorCo2 = 0;
   contadoGlobal = 0;
+  datoAnterior: any;
   public imagenReporte: ImagenesReportes;
 
   constructor(private estacionService: EstacionService, private graficaService: GraficaService,
@@ -69,7 +70,7 @@ export class GraficasComponent implements OnInit {
   async ngOnInit() {
     this.obtenerEstaciones();
     this.graficoEstaciones();
-    await this.obtenerLecturasInicial();
+    await this.obtenerLecturasInicial(1);
     this.crearGrafica();
   }
 
@@ -203,6 +204,7 @@ export class GraficasComponent implements OnInit {
     } else {
       this.reiniciarVariables();
       await this.obtenerLecturas();
+      // await this.obtenerLecturasInicial(this.opcionEstacion - 1);
       this.crearGrafica();
     }
   }
@@ -223,6 +225,9 @@ export class GraficasComponent implements OnInit {
     this.fechas = [];
     this.pruebaArray = [];
     this.sumIca = 0;
+    this.contar = 0;
+    this.contReiniciar = 0;
+    this.sumIcaAuxiliar = 0;
   }
 
   desarmarFiltro(filtro, codigoDispositivo, fecha) {
@@ -234,39 +239,30 @@ export class GraficasComponent implements OnInit {
     arrayOK.push({ nom: filtroEnviar.split(':'), fecha: fecha });
     this.sumarLecturas(arrayOK);
   }
-
+  contar: any = 0;
+  contReiniciar = 0;
+  sumIcaAuxiliar = 0;
   sumaIca() {
-    let acumValor = 0;
     if (this.pruebaArray[this.contadoGlobal] != undefined) {
-      // console.log('Impre: ', this.pruebaArray[this.contadoGlobal].fecha.slice(3, 5));
-      // console.log(this.fechas);
-
-
       for (let i = 0; i < this.fechas.length; i++) {
         if (this.fechas[i].id == this.pruebaArray[this.contadoGlobal].fecha.slice(3, 5)) {
-          // if(this.fechas.id == 5){
-            console.log('entroooo:')
-            if (i > 0) {
-              acumValor = this.fechas[i].totalPorcentICA;
-              this.fechas[i].sumaTotal = (this.fechas[i - 1].totalPorcentICA - this.fechas[i].totalPorcentICA) * (-1);
+
+          if (this.contadoGlobal > 1) {
+            if (this.contar == this.fechas[i].id) {
+              this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
             } else {
+              if (this.contReiniciar == 0) {
+                this.sumIca = 0;
+                this.contReiniciar = 1;
+              }
               this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
             }
-          // }
-          // if (i > 0) {
-          //   acumValor = this.fechas[i].totalPorcentICA;
-          //   this.fechas[i].sumaTotal = (this.fechas[i - 1].totalPorcentICA - this.fechas[i].totalPorcentICA) * (-1);
-          // } else {
-          //   this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
-          // }
+          }
         }
+        this.contar = this.fechas[i].id;
       }
-      //////////
-    } else {
-      console.log('error');
     }
     this.contadoGlobal++;
-    // console.log('FECHAS: ',this.fechas);
   }
 
   cantidadFechas() {
@@ -287,21 +283,19 @@ export class GraficasComponent implements OnInit {
   private sumarLecturas(data: any) {
     let a;
     this.contadorIteracion++;
+    // console.log(data)
     data.forEach((element, index) => {
       switch (element.nom[0]) {
         case 'ica':
-          this.contadorIca++;
           this.sumIca += parseInt(element.nom[1]);
           a = this.fechas.find(option => option.id == element.fecha.slice(3, 5));
-
           if (a != undefined) {
-            // console.log('BUSQUEDA: ',a.id);
             this.fechas.forEach(element => {
               if (element.id == a.id) {
                 element.totalPorcentICA = this.sumIca;
-                // console.log('totalPorcentajeICA: ',element.totalPorcentICA);
               }
             });
+            this.contadorIca++;
           }
           break;
         case 'pm1':
@@ -348,10 +342,12 @@ export class GraficasComponent implements OnInit {
       });
   }
 
-  async obtenerLecturasInicial() {
+  async obtenerLecturasInicial(estacion) {
+    console.log('obtenerLecturasInicial');
+    let esta = estacion
     let respuesta;
     this.opcionEstacion = 2;
-    respuesta = await this.graficaService.obtenerLecturas(1)
+    respuesta = await this.graficaService.obtenerLecturas(esta)
       .then((res) => {
         this.lecturas = res;
         this.pruebaArray = this.lecturas;
@@ -373,6 +369,8 @@ export class GraficasComponent implements OnInit {
   }
 
   public crearGrafica() {
+    console.log('contados: ', this.contar);
+    this.contar = 0;
     this.cantidadFechas();
     this.estacionSeleccionada = this.estacionesValidas[(this.opcionEstacion - 2)];
     this.nombreEstacion = this.estacionSeleccionada.descripcion;
@@ -448,6 +446,7 @@ export class GraficasComponent implements OnInit {
     this.fechas.forEach(element => {
       array.push(element.nombre);
       arrayValores.push(element.sumaTotal / element.totalRegistros);
+      this.sumIcaAuxiliar += element.sumaTotal / element.totalRegistros;
 
     });
     this.barChartLabels = array;
