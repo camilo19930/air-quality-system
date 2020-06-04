@@ -58,6 +58,10 @@ export class GraficasComponent implements OnInit {
   contadorCo2 = 0;
   contadoGlobal = 0;
   datoAnterior: any;
+  contar: any = 0;
+  contReiniciar = 0;
+  sumIcaAuxiliar = 0;
+  validadorConsulta = 0;
   public imagenReporte: ImagenesReportes;
 
   constructor(private estacionService: EstacionService, private graficaService: GraficaService,
@@ -68,6 +72,7 @@ export class GraficasComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.validadorConsulta = 0;
     this.obtenerEstaciones();
     this.graficoEstaciones();
     await this.obtenerLecturasInicial(1);
@@ -204,7 +209,7 @@ export class GraficasComponent implements OnInit {
     } else {
       this.reiniciarVariables();
       await this.obtenerLecturas();
-      // await this.obtenerLecturasInicial(this.opcionEstacion - 1);
+      this.validadorConsulta = 1;
       this.crearGrafica();
     }
   }
@@ -231,23 +236,18 @@ export class GraficasComponent implements OnInit {
   }
 
   desarmarFiltro(filtro, codigoDispositivo, fecha) {
-    let nomAgente = '';
-    let codigoAscci;
     let filtroEnviar;
     let arrayOK = [];
     filtroEnviar = filtro.replace('}', '').replace('{', '');
     arrayOK.push({ nom: filtroEnviar.split(':'), fecha: fecha });
     this.sumarLecturas(arrayOK);
   }
-  contar: any = 0;
-  contReiniciar = 0;
-  sumIcaAuxiliar = 0;
-  sumaIca() {
+  
+  sumaIca() { 
     if (this.pruebaArray[this.contadoGlobal] != undefined) {
       for (let i = 0; i < this.fechas.length; i++) {
         if (this.fechas[i].id == this.pruebaArray[this.contadoGlobal].fecha.slice(3, 5)) {
-
-          if (this.contadoGlobal > 1) {
+          if (this.contadoGlobal > 1) { 
             if (this.contar == this.fechas[i].id) {
               this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
             } else {
@@ -255,7 +255,7 @@ export class GraficasComponent implements OnInit {
                 this.sumIca = 0;
                 this.contReiniciar = 1;
               }
-              this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
+              this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;           
             }
           }
         }
@@ -264,7 +264,26 @@ export class GraficasComponent implements OnInit {
     }
     this.contadoGlobal++;
   }
-
+  sumaIcaMes() { 
+    if (this.pruebaArray[this.contadoGlobal] != undefined) {
+      for (let i = 0; i < this.fechas.length; i++) {
+          if (this.contadoGlobal > 1) { 
+            if (this.contar == this.fechas[i].id) {
+              this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
+            } else {
+              if (this.contReiniciar == 0) {
+                this.sumIca = 0;
+                this.contReiniciar = 1;
+              }
+              this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;      
+            }
+          }
+        // }
+        this.contar = this.fechas[i].id;
+      }
+    }
+    this.contadoGlobal++;
+  }
   cantidadFechas() {
     let cont = 0;
     this.fechas.forEach(element => {
@@ -283,7 +302,6 @@ export class GraficasComponent implements OnInit {
   private sumarLecturas(data: any) {
     let a;
     this.contadorIteracion++;
-    // console.log(data)
     data.forEach((element, index) => {
       switch (element.nom[0]) {
         case 'ica':
@@ -343,7 +361,6 @@ export class GraficasComponent implements OnInit {
   }
 
   async obtenerLecturasInicial(estacion) {
-    console.log('obtenerLecturasInicial');
     let esta = estacion
     let respuesta;
     this.opcionEstacion = 2;
@@ -369,7 +386,7 @@ export class GraficasComponent implements OnInit {
   }
 
   public crearGrafica() {
-    console.log('contados: ', this.contar);
+    
     this.contar = 0;
     this.cantidadFechas();
     this.estacionSeleccionada = this.estacionesValidas[(this.opcionEstacion - 2)];
@@ -405,7 +422,12 @@ export class GraficasComponent implements OnInit {
   }
 
   public graficoEstaciones() {
-    this.sumaIca();
+    if(this.validadorConsulta == 0) {
+       this.sumaIca();
+    }else {
+      this.sumaIcaMes();
+    }
+   
     this.barChartOptions = {
       responsive: true,
       scales: { xAxes: [{}], yAxes: [{}] },
