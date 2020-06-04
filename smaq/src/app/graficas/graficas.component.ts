@@ -575,7 +575,7 @@ export class GraficasComponent implements OnInit {
       doc.text('lectura Promedio Co2: ', 110, 141);
       doc.text(lecturaPromedioCo2, 152, 141);
       doc.text('lectura Promedio Pm1: ', 110, 148);
-      doc.text(0.000, 152, 148);
+      doc.text('0.000', 152, 148);
       doc.text('lectura Promedio Pm25: ', 110, 155);
       doc.text(lecturaPromedioPm25, 152, 155);
       doc.text('lectura Promedio Pm25: ', 110, 162);
