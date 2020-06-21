@@ -158,7 +158,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
 
   llenarLecturas(indiceGeneral) {
-    this.ica = indiceGeneral.aqi;
+    this.ica = indiceGeneral.aqi_co_8h;
     this.lecturaCo = indiceGeneral.co;
     this.lecturaCo2 = indiceGeneral.co2;
     this.lecturaPm1 = indiceGeneral.pm1;
