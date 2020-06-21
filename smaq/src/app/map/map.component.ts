@@ -59,15 +59,15 @@ export class MapComponent implements OnInit, OnDestroy {
     this.subscription = this._mqttService
       .observe("aqs/sensorpm")
       .subscribe((message: IMqttMessage) => {
-        console.log("Llegó el mensaje: " + message.payload.toString());
+        // console.log("Llegó el mensaje: " + message.payload.toString());
         try {
           this.msg = JSON.parse(message.payload.toString());
-          console.log('MENSAJE ', this.msg);
+          // console.log('MENSAJE ', this.msg);
           this.seleccionarColor(this.msg);
 
           // this.popup.setContent("<p>" + this.msg.aqi + "</p>").update();
         } catch (e) {
-          console.log("Error el JSON recibido del servidor no es valido");
+          // console.log("Error el JSON recibido del servidor no es valido");
         }
       });
   }
@@ -99,7 +99,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 this.colorCalidad = "#7e03f9";
               } else {
                 this.colorCalidad = "#9c9c9c";
-                console.log("Color gris =  	Estacion desactivada ");
+                // console.log("Color gris =  	Estacion desactivada ");
               }
             }
           }
@@ -190,7 +190,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
   async obtenerEstaciones() {
     this.estacionService.getEstaciones().subscribe(estaciones => {
-      console.log("Datos recibidos ::: ", JSON.stringify(estaciones));
+      // console.log("Datos recibidos ::: ", JSON.stringify(estaciones));
       this.estaciones = estaciones;
       this.generarMapa();
     });
