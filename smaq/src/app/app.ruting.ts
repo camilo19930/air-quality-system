@@ -13,7 +13,7 @@ import { GraficasComponent } from './graficas/graficas.component';
 import { JustificacionComponent } from './justificacion/justificacion.component';
 import { EducacionComponent } from './educacion/educacion.component';
 import { LoginComponent } from './login/login.component';
-import { MenuLoginComponent } from './login/menu-login/menu-login.component';
+import { AuthGuard } from './guard/auth.guard';
 
 // Array de rutas
 const appRoutes: Routes = [
@@ -25,7 +25,8 @@ const appRoutes: Routes = [
   },
   {
     path: 'estacion',
-    component: EstacionComponent
+    component: EstacionComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'home',
@@ -56,9 +57,6 @@ const appRoutes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'menuLogin', component: MenuLoginComponent
-  },
-    {
     path: '',
     component: HomeComponent
   }

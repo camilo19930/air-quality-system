@@ -1,19 +1,21 @@
 <main>
-  <!-- <form [formGroup]="form" novalidate autocomplete="off" (keydown.enter)="$event.preventDefault()"> -->
-  <form novalidate autocomplete="off" (keydown.enter)="$event.preventDefault()">
-    
-    <div style="text-align: center; height: 100%; margin-top: -30px;">
-      <div style="border: 2px solid gray; width: 30%;margin: auto;"><br>
-        <img src="../../assets/img/icono_smaq_verde.png" alt="">
-        <input type="text" placeholder="Nombre Usuario" [(ngModel)]="user" name="user" style="width: 70%;"><br><br>
-        <input type="password" placeholder="Contraseña" [(ngModel)]="password" name="pass" style="width: 70%;"><br><br>
-        
-        <button style="margin-left: 30px; margin-top:0px ; width: 120px;" type="button"
-          class="btn btn-success" (click)="login()">Entrar</button>
-        <div class="espacio"></div>
+  <div style="width: 100%;">
+    <form #form="ngForm" (ngSubmit)="login(form)" novalidate autocomplete="off" (keydown.enter)="$event.preventDefault()">
+      <div class="card bg-light mb-3" style="max-width: 18rem; text-align: center; margin: auto; ">
+        <div class="card-body">
+          <img src="../../assets/img/icono_smaq_verde.png" alt=""><br><br>
+          <span *ngIf="form.submitted && form.controls['user'].errors" class="text-danger">El usuario es obligatorio</span>
+          <input type="text" placeholder="Nombre Usuario" [(ngModel)]="user" name="user" required minlength="6"
+            style="width: 100%;  margin-bottom: 15px">
+            <span *ngIf="form.submitted && form.controls['password'].errors" class="text-danger">La contraseña es obligatoria</span>
+          <input type="password" placeholder="Contraseña" [(ngModel)]="password" name="password" required minlength="6"
+            style="width: 100%; margin-bottom: 10px;">
+          <button style="margin-left: 30px; margin-top:0px ; width: 120px;" type="button" class="btn btn-success"
+            type="submit">Entrar</button>
+        </div>
+        <!-- <button style="margin-left: 30px; margin-top:0px ; width: 120px;" type="button" class="btn btn-success"
+            type="button" (click)="registro()">Crear Usuario</button> -->
       </div>
-      
-    </div>
-    <div class="espacio"></div>
-  </form>
+    </form>
+  </div>
 </main>

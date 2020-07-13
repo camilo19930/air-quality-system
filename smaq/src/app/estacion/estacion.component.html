@@ -1,38 +1,37 @@
-<div style="width: 100%;">
-    <div style="text-align: center; height: 100%; margin-top: -30px; margin-bottom: 20px;">
+<button class="btn btn-secondary float-right" style="margin-top: -42px !important;" (click)="salir()"
+    (keydown.enter)="salir()">Cerrar Sesión</button>
+<div style="text-align: center; height: 100%; margin-bottom: 20px;">
     <h3>Administración de Estaciones</h3>
 </div>
-<div class="card" style="width: 75%; margin: auto;">
-    <div class="card-header" style="text-align: center; height: 100%; ">
-       <h5> Listado de Estaciones </h5>
+<div class="card" style="max-width: 56rem; text-align: center; margin: auto;">
+    <div class="card-header">
+        Listado de Estaciones
     </div>
     <table class="table table-bordered table-dark">
         <thead>
             <tr>
                 <th scope="col">id</th>
-                <th scope="col">Ubicacion</th>
+                <!-- <th scope="col">Ubicacion</th> -->
                 <th scope="col">descripcion</th>
-                <th scope="col">Fecha Instalcion</th>
+                <!-- <th scope="col">Fecha Instalcion</th> -->
                 <th scope="col">estado</th>
-                <th scope="col" style="width: 80px;">Editar</th>
+                <th scope="col">Editar</th>
                 <th scope="col">Eliminar</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let estacion of estacion">
                 <th scope="row">{{estacion.id}}</th>
-                <td>{{estacion.ubicacion}}</td>
+                <!-- <td>{{estacion.ubicacion}}</td> -->
                 <td>{{estacion.descripcion}}</td>
-                <td>{{estacion.fechaInstalacion}}</td>
+                <!-- <td>{{estacion.fechaInstalacion}}</td> -->
                 <td>{{estacion.estado}}</td>
-                <button type="button" name="editar" [routerLink]="['/crearEstacion/form',estacion.id]" class="btn btn-info"
-                style="margin-top: 13px; margin-left: 7px;">Editar</button>
-                <td><button type="button" name="eliminar" (click)="delete(estacion)" class="btn btn-info">Eliminar</button></td>
+                <button style="margin-top: 14px" type="button" name="editar"
+                    [routerLink]="['/crearEstacion/form',estacion.id]" class="btn btn-info">Editar</button>
+                <td><button type="button" name="eliminar" (click)="delete(estacion)"
+                        class="btn btn-info">Eliminar</button></td>
         </tbody>
     </table>
-
     <button type="button" class="btn btn-info" routerLink="/crearEstacion"
-    style="margin-top: -16px;">Crear</button>
-</div>
-<div class="espacio"></div>
+        style="margin-top:-20px; margin-bottom: 25px;">Crear</button>
 </div>
