@@ -2,15 +2,13 @@ div {
     height: 600px;
     width: 100%;
 }
-
 .container{
   background: gray !important; 
 }
 .espacio {
     width: 100%;
     height: 40px;
-}
-  
+}  
 .mapa {
     z-index: 0;
     width:100% !important;
@@ -25,7 +23,7 @@ div {
   margin-top: -245px;
   float: left;
   position: relative;
-  aling-content:center;
+  align-content:center;
 
 }
 .info_imagen{
@@ -36,7 +34,7 @@ div {
   position: relative;
   margin: auto;
   margin-top:10px;
-  aling-content:center;
+  align-content:center;
  }
  #info_imagen_cabecera{
   background: green;
@@ -57,16 +55,12 @@ div {
  #next:hover{
   background: rgba(3, 3, 3,0.5);
 }
- #titulo_cabecera{
-  
- }
 #img_Contaminantes {
   width: 160px;
   height: 200px;z-index: 1;
   position: relative;
   cursor: pointer;
 }
-
 .img_Estado_Estacion {
     width: 180px;
     height: 200px;
@@ -75,14 +69,10 @@ div {
     position: relative;
     margin: -185px 0px 0px 0px;
 }
-
-
-
 #tabla {
     width: 200px;
     height: 220px;
 }
-
 #estado {
     float: left;
     height: 200px;
@@ -96,9 +86,6 @@ div {
   width: 580px;
   height: 560px;
 }
-
-
-
 #contenedor_informacion{
   background: rgba(3, 3, 3,0.5);
   z-index: 1;
@@ -107,9 +94,8 @@ div {
   margin: -594px 0px 0px 0px;
   float: right;
   position: relative;
-  aling-content:center;
+  align-content:center;
 }
-
 #boton_flecha{
   margin:10px 0px 0px -25px;
   width: 20px;
@@ -127,7 +113,7 @@ div {
   z-index: 1;
   margin: auto;
   border-radius: 5px;
-  aling-content:center;
+  align-content:center;
 }
 .col{
   cursor: pointer;
@@ -135,12 +121,6 @@ div {
   color: black;
   border-radius: 3%;
 }
-/*
-.col:hover{
-  opacity: 0.3;
-  background: red;
-  color: white;
- } */
  #informacion_general{
    width: 350px;
    height: 80%;
@@ -149,7 +129,6 @@ div {
    overflow-x: hidden;
    overflow-y: hidden;
  }
-
  #informacion_detallada{
   width: 0px;
   height: 0%;
@@ -159,29 +138,17 @@ div {
   overflow-y: hidden;
   overflow-x: hidden;
  }
-
  .colorContaminate {
    width: 60px;
    height: 30px;
    border-radius:15px;
    border: 4px solid #c1c1c1;
  }
- /*
-.lecturaIzq { 
-float: left;
-}*/
 .colorContaminate {
   float: left;
   margin: 0px 0px 0px 12px;
 }
-/*
-#imagenEstacion{
-  width: 250px;
-  height: 250px;
-}*/
-
  @media only screen and (max-width: 415px) {
-
   #contenedor_informacion{
     background: rgba(3, 3, 3,0.5);
     z-index: 1;
@@ -190,9 +157,8 @@ float: left;
     margin: -600px 0px 0px 0px;
     float: right;
     position: relative;
-    aling-content:center;
-  }
-  
+    align-content:center;
+  }  
   #boton_flecha{
     margin:5px 0px 0px -25px;
     width: 20px;
@@ -209,7 +175,7 @@ float: left;
     height: 100%;
     z-index: 1;
     border-radius: 5px;
-    aling-content:center;
+    align-content: center;
   }
   .col{
     cursor: pointer;
@@ -217,13 +183,6 @@ float: left;
     color: black;
     border-radius: 3%;
   }
-  
-  /*
-  .col:hover{
-    opacity: 0.3;
-    background: black;
-    color: rgb(226, 218, 218);
-   }*/
    #informacion_general{
      width: 310px;
      height: 100%;
@@ -245,10 +204,12 @@ float: left;
    #contentModal{
      width:310px;
      height:570px;
-
+     margin:auto;
    }
-  
-  
+   #img_tabla_grande {
+    width: 380px;
+    height: 360px !important;
+  }  
 }
 .titulo-tabla {
   background-color: #36B24B !important; 
