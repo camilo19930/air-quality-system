@@ -53,7 +53,7 @@
   <div class="espacio"></div>
   <h1>{{nombreEstacion}}</h1>
   <div class="row" style="width: 98%;">
-    <div class="col-sm-7">
+    <div class="col-sm-12">
       <div class="card sin_borde">
         <div class="card-body">
           <div class="content" id="img1Pdf">
@@ -68,8 +68,9 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-4">
-      <div class="card sin_borde" style="height: 100%;">
+    <div class="row" style="width:  98%;"*ngIf="ocultarTabla">
+      <div class="col-sm-12">
+        <!-- <div class="card sin_borde" style="height: 100%;"> -->
         <div class="card_estaciones sin_borde">
           <div class="card-body informacionEstaciones">
             <table class="table table-striped">
@@ -77,40 +78,83 @@
                 <tr class="titulo-tabla" id="img2Pdf">
                   <th scope="col">INFORMACiÓN GRÁFICO</th>
                   <th scope="col"> </th>
+                  <th scope="col"> </th>
+                  <th scope="col"> </th>
+                  <th scope="col"> </th>
+                  <th scope="col"> </th>
+                  <th scope="col"> </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row">Nombre de de la estación:</th>
-                  <td>{{nombreEstacion}}</td>
+                  <th class="columna" scope="row">Nombre de de la estación:</th>
+                  <th class="columna" scope="row">Ubicación</th>
+                  <th class="columna" scope="row">ICA registrado</th>
+                  <th class="columna" scope="row">monóxido de carbono</th>
+                  <th class="columna" scope="row">dióxido de nitrogeno</th>
+                  <th class="columna" scope="row">Nivel de PM10</th>
+                  <th class="columna" scope="row">Nivel de PM2.5</th>
                 </tr>
                 <tr>
-                  <th scope="row">Ubicación</th>
-                  <td>{{ubicacion}}</td>
-                </tr>
-                <tr>
-                  <th scope="row">ICA registrado:</th>
-                  <td>{{sumIcaAuxiliar | number }}</td>
-                </tr>
-                <tr>
-                  <th scope="row">monóxido de carbono:</th>
-                  <td>{{sumCo | number}} mg/m3</td>
-                </tr>
-                <tr>
-                  <th scope="row">dióxido de nitrogeno:</th>
-                  <td>{{sumCo2 | number}} ppm</td>
-                </tr>
-                <tr>
-                  <th scope="row">Nivel de PM10:</th>
-                  <td>{{sumPm10 | number}} ppm</td>
-                </tr>
-                <tr>
-                  <th scope="row">Nivel de PM2.5:</th>
-                  <td>{{sumPm25 | number}} ppm</td>
+                  <td class="columna">{{nombreEstacion}}</td>
+                  <td class="columna">{{ubicacion}}</td>
+                  <td class="columna">{{sumIcaAuxiliar | number }}</td>
+                  <td class="columna">{{sumCo | number}} mg/m3</td>
+                  <td class="columna">{{sumCo2 | number}} ppm</td>
+                  <td class="columna">{{sumPm10 | number}} ppm</td>
+                  <td class="columna">{{sumPm25 | number}} ppm</td>
                 </tr>
               </tbody>
             </table>
-
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row tabla-pequena" style="width:  98%;">    
+      <div class="col-sm-12" *ngIf="!ocultarTabla">
+        <div class="card sin_borde" style="height: 100%;">
+          <div class="card_estaciones sin_borde">
+            <div class="card-body informacionEstaciones">
+              <table class="table table-striped">
+                <thead>
+                  <tr class="titulo-tabla" id="img2Pdf">
+                    <th scope="col">INFORMACiÓN GRÁFICO</th>
+                    <th scope="col"> </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Nombre de de la estación:</th>
+                    <td>{{nombreEstacion}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Ubicación</th>
+                    <td>{{ubicacion}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">ICA registrado:</th>
+                    <td>{{sumIcaAuxiliar | number }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">monóxido de carbono:</th>
+                    <td>{{sumCo | number}} mg/m3</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">dióxido de nitrogeno:</th>
+                    <td>{{sumCo2 | number}} ppm</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Nivel de PM10:</th>
+                    <td>{{sumPm10 | number}} ppm</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Nivel de PM2.5:</th>
+                    <td>{{sumPm25 | number}} ppm</td>
+                  </tr>
+                </tbody>
+              </table>
+  
+            </div>
           </div>
         </div>
       </div>

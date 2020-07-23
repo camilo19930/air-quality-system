@@ -73,6 +73,10 @@
         height: 60px;
         margin: auto;
     }
+    .tabla-pequena {
+        width: 70%;
+        margin-right: 70px;
+    }
 }
 
 #img2Pdf {
@@ -146,4 +150,8 @@
 .titulo-tabla {
     background-color: #36B24B !important;
     color: white;
+}
+
+.oculto {
+    visibility: hidden;
 }

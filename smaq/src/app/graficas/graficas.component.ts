@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ɵConsole } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ɵConsole, HostListener } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { Estacion } from '../estacion/estacion';
@@ -8,6 +8,7 @@ import html2canvas from 'html2canvas'; // libreria que permite renderizar de htm
 import { GraficaService } from '../services/graficas/grafica.service';
 import { ImagenesReportes } from './imagenesReportes';
 import { DecimalPipe } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-graficas',
@@ -45,8 +46,8 @@ export class GraficasComponent implements OnInit {
   public sumCo2 = 0;
   public sumIca = 0;
   public contadorIteracion = 0;
-  public fechaDesde = '2019-01-01';
-  public fechaHasta = '2022-12-30';
+  public fechaDesde: string;
+  public fechaHasta: string;
   public pruebaArray = [];
   public fechas: any = [];
   public contMes = 0;
@@ -63,23 +64,130 @@ export class GraficasComponent implements OnInit {
   sumIcaAuxiliar = 0;
   validadorConsulta = 0;
   public imagenReporte: ImagenesReportes;
-
+  globalArrayFechas: any = [];
+  globalArrayIca: any = [];
+  globalArrayCo2: any = [];
+  globalArrayVoc: any = [];
+  globalArrayNo2: any = [];
+  globalArrayCo: any = [];
+  globalArrayPm10: any = [];
+  globalArrayPm25: any = [];
+  globalArrayFechasTransformadas: any = [];
+  ocultarTabla = true;
+  datosGrafica: any = [];
+  datosGraficaEjemplo = [
+    {
+      mes: 5,
+      avg_ica: 102,
+      avg_co2: 500.00,
+      avg_voc: 74,
+      avg_no2: 99,
+      avg_co: 30,
+      avg_pm10: 96,
+      avg_pm25: 80
+    },
+    {
+      mes: 6,
+      avg_ica: 102,
+      avg_co2: 500.00,
+      avg_voc: 74,
+      avg_no2: 99,
+      avg_co: 30,
+      avg_pm10: 96,
+      avg_pm25: 80
+    },
+    {
+      mes: 7,
+      avg_ica: 102,
+      avg_co2: 500.00,
+      avg_voc: 74,
+      avg_no2: 99,
+      avg_co: 30,
+      avg_pm10: 96,
+      avg_pm25: 80
+    }
+  ];
   constructor(
     private estacionService: EstacionService,
     private graficaService: GraficaService,
     private decimalPipe: DecimalPipe
   ) {
     this.opcionEstacion = 0;
-    // this.nombreEstacion;
     this.imagenReporte = new ImagenesReportes();
+    this.fechaDesde = '2019-01-01';
+    this.fechaHasta = '2022-12-30';
+    this.getScreenSize();
   }
-
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+    const scrHeight = window.innerHeight;
+    const scrWidth = window.innerWidth;
+    if (window.innerWidth < 815) {
+      this.ocultarTabla = false;
+    } else {
+      this.ocultarTabla = true;
+    }
+  }
   async ngOnInit() {
-    this.validadorConsulta = 0;
     this.obtenerEstaciones();
-    this.graficoEstaciones();
-    await this.obtenerLecturasInicial(1);
-    this.crearGrafica();
+    this.obtenerPromediosInicial(); // quitarlo
+    // await this.obtenerPromediosService(); ponerlo
+    this.parsearFecha(); // quitarlo
+    this.graficoEstaciones(); // quitarlo
+  }
+  obtenerPromediosInicial() {
+    this.datosGraficaEjemplo.forEach(element => {
+      this.globalArrayIca.push(element.avg_ica);
+      this.globalArrayFechas.push(element.mes);
+      this.globalArrayCo2.push(element.avg_co2);
+      this.globalArrayVoc.push(element.avg_voc);
+      this.globalArrayNo2.push(element.avg_no2);
+      this.globalArrayCo.push(element.avg_co);
+      this.globalArrayPm10.push(element.avg_pm10);
+      this.globalArrayPm25.push(element.avg_pm25);
+    });
+  }
+  parsearFecha() {
+    this.globalArrayFechas.forEach(element => {
+      switch (element) {
+        case 1:
+          this.globalArrayFechasTransformadas.push('Enero');
+          break;
+        case 2:
+          this.globalArrayFechasTransformadas.push('Febrero');
+          break;
+        case 3:
+          this.globalArrayFechasTransformadas.push('Marzo');
+          break;
+        case 4:
+          this.globalArrayFechasTransformadas.push('Abril');
+          break;
+        case 5:
+          this.globalArrayFechasTransformadas.push('Mayo');
+          break;
+        case 6:
+          this.globalArrayFechasTransformadas.push('Junio');
+          break;
+        case 7:
+          this.globalArrayFechasTransformadas.push('Julio');
+          break;
+        case 8:
+          this.globalArrayFechasTransformadas.push('Agosto');
+          break;
+        case 9:
+          this.globalArrayFechasTransformadas.push('Septiembre');
+          break;
+        case 10:
+          this.globalArrayFechasTransformadas.push('Octubre');
+          break;
+        case 11:
+          this.globalArrayFechasTransformadas.push('Noviembre');
+          break;
+        case 12:
+          this.globalArrayFechasTransformadas.push('Diciembre');
+          break;
+      }
+    });
   }
   async obtenerEstaciones() {
     await this.estacionService.getEstaciones().subscribe(estaciones => {
@@ -104,111 +212,30 @@ export class GraficasComponent implements OnInit {
       return 0;
     });
   }
-  llenarArrayFechas(fecha) {
-    let busqueda;
-    switch (fecha.slice(3, 5)) {
-      case '01':
-        busqueda = this.fechas.find(option => option.nombre === 'Enero');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 1, nombre: 'Enero' });
-        }
-        break;
-      case '02':
-        busqueda = this.fechas.find(option => option.nombre === 'Febrero');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 2, nombre: 'Febrero' });
-        }
-        break;
 
-      case '03':
-        busqueda = this.fechas.find(option => option.nombre === 'Marzo');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 3, nombre: 'Marzo' });
-        }
-        break;
-      case '04':
-        busqueda = this.fechas.find(option => option.nombre === 'Abril');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 4, nombre: 'Abril' });
-        }
-        break;
-      case '05':
-        busqueda = this.fechas.find(option => option.nombre === 'Mayo');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 5, nombre: 'Mayo' });
-        }
-        break;
-
-      case '06':
-        busqueda = this.fechas.find(option => option.nombre === 'Junio');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 6, nombre: 'Junio' });
-        }
-        break;
-
-      case '07':
-        busqueda = this.fechas.find(option => option.nombre === 'Julio');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 7, nombre: 'Julio' });
-        }
-        break;
-
-      case '08':
-        busqueda = this.fechas.find(option => option.nombre === 'Agosto');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 8, nombre: 'Agosto' });
-        }
-        break;
-
-      case '09':
-        busqueda = this.fechas.find(option => option.nombre === 'Septiembre');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 9, nombre: 'Septiembre' });
-        }
-        break;
-
-      case '10':
-        busqueda = this.fechas.find(option => option.nombre === 'Octubre');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 10, nombre: 'Octubre' });
-        }
-        break;
-
-      case '11':
-        busqueda = this.fechas.find(option => option.nombre === 'Noviembre');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 11, nombre: 'Nobiembre' });
-        }
-        break;
-
-      case '12':
-        busqueda = this.fechas.find(option => option.nombre === 'Diciembre');
-        if (busqueda === undefined) {
-          this.fechas.push({ id: 12, nombre: 'Diciembre' });
-        }
-        break;
-    }
-  }
-
-  obtenerArrayPrueba() {
-    this.pruebaArray.forEach((element, index) => {
-      const fechaElem = element.fecha.slice(6, 10) + '-' + element.fecha.slice(3, 5) + '-' + element.fecha.slice(0, 2);
-      if (fechaElem >= this.fechaDesde && fechaElem <= this.fechaHasta) {
-        this.llenarArrayFechas(element.fecha);
-        this.desarmarFiltro(element.lectura, element.idDispositivo, element.fecha);
-        this.graficoEstaciones();
-      }
-    });
-  }
 
   async llamarLecturas() {
-    if (this.fechaDesde === undefined || this.fechaHasta === undefined) {
-      alert('Debe seleccionar el rango de fehcas');
+    if (this.fechaDesde.length > 0 && this.fechaHasta.length > 0) {
+      const fechaDesdeDateAcum = new Date(this.fechaDesde);
+      const fechaDesdeDate = fechaDesdeDateAcum.setDate(fechaDesdeDateAcum.getDate() + 1);
+      const fechaHastaDateAcum = new Date(this.fechaHasta);
+      const fechaHastaDate = fechaHastaDateAcum.setDate(fechaHastaDateAcum.getDate() + 1);
+      if (fechaDesdeDate > fechaHastaDate) {
+        Swal.fire({
+          allowOutsideClick: true,
+          type: 'error',
+          text: 'La fecha desde nno puede ser mayor a la fecha hasta'
+        });
+      } else {
+        this.reiniciarVariables();
+        await this.obtenerPromediosService();
+      }
     } else {
-      this.reiniciarVariables();
-      await this.obtenerLecturas();
-      this.validadorConsulta = 1;
-      this.crearGrafica();
+      Swal.fire({
+        allowOutsideClick: true,
+        type: 'error',
+        text: 'Debe ingresar un rango de fechas'
+      });
     }
   }
   reiniciarVariables() {
@@ -232,142 +259,35 @@ export class GraficasComponent implements OnInit {
     this.contReiniciar = 0;
     this.sumIcaAuxiliar = 0;
   }
-  desarmarFiltro(filtro, codigoDispositivo, fecha) {
-    let filtroEnviar;
-    const arrayOK = [];
-    filtroEnviar = filtro.replace('}', '').replace('{', '');
-    arrayOK.push({ nom: filtroEnviar.split(':'), fecha: fecha });
-    this.sumarLecturas(arrayOK);
-  }
-
-  sumaIca() {
-    if (this.pruebaArray[this.contadoGlobal] !== undefined) {
-      for (let i = 0; i < this.fechas.length; i++) {
-        if (this.fechas[i].id === this.pruebaArray[this.contadoGlobal].fecha.slice(3, 5)) {
-          if (this.contadoGlobal > 1) {
-            if (this.contar === this.fechas[i].id) {
-              this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
-            } else {
-              if (this.contReiniciar === 0) {
-                this.sumIca = 0;
-                this.contReiniciar = 1;
-              }
-              this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
-            }
-          }
-        }
-        this.contar = this.fechas[i].id;
-      }
-    }
-    this.contadoGlobal++;
-  }
-  sumaIcaMes() {
-    if (this.pruebaArray[this.contadoGlobal] !== undefined) {
-      for (let i = 0; i < this.fechas.length; i++) {
-        if (this.contadoGlobal > 1) {
-          if (this.contar === this.fechas[i].id) {
-            this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
-          } else {
-            if (this.contReiniciar === 0) {
-              this.sumIca = 0;
-              this.contReiniciar = 1;
-            }
-            this.fechas[i].sumaTotal = this.fechas[i].totalPorcentICA;
-          }
-        }
-        // }
-        this.contar = this.fechas[i].id;
-      }
-    }
-    this.contadoGlobal++;
-  }
-  cantidadFechas() {
-    let cont = 0;
-    this.fechas.forEach(element => {
-      this.pruebaArray.forEach(element2 => {
-        if (element2.lectura.replace('}', '').replace('{', '').split(':')[0] === 'ica') {
-          if (element2.fecha.slice(3, 5) === element.id) {
-            cont++;
-          }
-        }
-      });
-      element.totalRegistros = cont;
-      cont = 0;
-    });
-  }
-
-  private sumarLecturas(data: any) {
-    let a;
-    this.contadorIteracion++;
-    data.forEach((element, index) => {
-      switch (element.nom[0]) {
-        case 'ica':
-          this.sumIca += parseInt(element.nom[1]);
-          a = this.fechas.find(option => option.id === element.fecha.slice(3, 5));
-          if (a !== undefined) {
-            this.fechas.forEach(element => {
-              if (element.id === a.id) {
-                element.totalPorcentICA = this.sumIca;
-              }
-            });
-            this.contadorIca++;
-          }
-          break;
-        case 'pm1':
-          this.contadorPm1++;
-          this.sumPm1 += parseInt(element.nom[1]);
-          break;
-        case 'pm25':
-          this.contadorPm25++;
-          this.sumPm25 += parseInt(element.nom[1]);
-          break;
-        case 'pm10':
-          this.contadorPm10++;
-          this.sumPm10 += parseInt(element.nom[1]);
-          break;
-        case 'co':
-          this.contadorCo++;
-          this.sumCo += parseInt(element.nom[1]);
-          break;
-        case 'co2':
-          this.contadorCo2++;
-          this.sumCo2 += parseInt(element.nom[1]);
-          break;
-      }
-    });
-    if (this.contadorIteracion === this.pruebaArray.length) {
-      this.sumCo2 = (this.sumCo2 / this.contadorCo2);
-      this.sumCo = this.sumCo / this.contadorCo;
-      this.sumPm10 = this.sumPm10 / this.contadorPm10;
-      this.sumPm1 = this.sumPm1 / this.contadorPm1;
-      this.sumPm25 = this.sumPm25 / this.contadorPm25;
-      this.sumIca = this.sumIca / this.contadorIca;
-    }
-  }
-  async obtenerLecturas() {
+  async obtenerPromediosService() {
     let respuesta;
-    respuesta = await this.graficaService.obtenerLecturas(this.opcionEstacion - 1)
+    const fechaInicial = this.formatearFecha(this.fechaDesde);
+    const fechaFinal = this.formatearFecha(this.fechaHasta);
+    respuesta = await this.graficaService.obtenerPromedios(this.opcionEstacion - 1, fechaInicial, fechaFinal)
       .then((res) => {
-        this.lecturas = res;
-        this.pruebaArray = this.lecturas;
-        this.obtenerArrayPrueba();
+        this.datosGrafica = res;
       }).catch((error) => {
         console.log(error);
       });
-  }
-  async obtenerLecturasInicial(estacion) {
-    const esta = estacion;
-    let respuesta;
-    this.opcionEstacion = 2;
-    respuesta = await this.graficaService.obtenerLecturas(esta)
-      .then((res) => {
-        this.lecturas = res;
-        this.pruebaArray = this.lecturas;
-      }).catch((error) => {
-        console.log(error);
+    if (this.datosGrafica.length > 0) {
+      this.datosGrafica.forEach(element => {
+        this.globalArrayIca.push(element.avg_ica);
+        this.globalArrayFechas.push(element.mes);
+        this.globalArrayCo2.push(element.avg_co2);
+        this.globalArrayVoc.push(element.avg_voc);
+        this.globalArrayNo2.push(element.avg_no2);
+        this.globalArrayCo.push(element.avg_co);
+        this.globalArrayPm10.push(element.avg_pm10);
+        this.globalArrayPm25.push(element.avg_pm25);
       });
-    this.lecturas = null;
-    this.obtenerArrayPrueba();
+      await this.parsearFecha();
+      this.graficoEstaciones();
+    }
+    console.log('datos recibidos', this.datosGrafica);
+  }
+  formatearFecha(fecha) {
+    const fechaParsear = fecha.split('-');
+    return `${fechaParsear[2]}-${fechaParsear[1]}-${fechaParsear[0]}`;
   }
   async obtenerDispositivos() {
     let respuesta;
@@ -380,7 +300,6 @@ export class GraficasComponent implements OnInit {
   }
   public crearGrafica() {
     this.contar = 0;
-    this.cantidadFechas();
     this.estacionSeleccionada = this.estacionesValidas[(this.opcionEstacion - 2)];
     this.nombreEstacion = this.estacionSeleccionada.descripcion;
     if ((this.opcionEstacion - 2) === 0) {
@@ -389,34 +308,12 @@ export class GraficasComponent implements OnInit {
       this.ubicacion = 'calle 27 con carrera 36'; // estacion 1 centro
     }
     if ((this.opcionEstacion - 1) !== 0) {
-      this.graficoEstacionEspecifica();
+      // this.graficoEstacionEspecifica();
     } else {
       this.graficoEstaciones();
     }
   }
-  public chartClicked({
-    event,
-    active
-  }: {
-    event: MouseEvent;
-    active: {}[];
-  }): void {
-  }
-  public chartHovered({
-    event,
-    active
-  }: {
-    event: MouseEvent;
-    active: {}[];
-  }): void {
-  }
   public graficoEstaciones() {
-    if (this.validadorConsulta === 0) {
-      this.sumaIca();
-    } else {
-      this.sumaIcaMes();
-    }
-
     this.barChartOptions = {
       responsive: true,
       scales: { xAxes: [{}], yAxes: [{}] },
@@ -427,48 +324,20 @@ export class GraficasComponent implements OnInit {
         }
       }
     };
-    const array = [];
-    const arrayValores = [];
-    this.fechas.forEach(element => {
-      array.push(element.nombre);
-      arrayValores.push(element.sumaTotal / element.totalRegistros);
-    });
-    this.barChartLabels = array;
+    this.barChartLabels = this.globalArrayFechasTransformadas;
     this.barChartType = 'bar';
     this.barChartLegend = true;
     this.barChartData = [
-      { data: arrayValores, label: 'ICA' }
+      { data: this.globalArrayIca, label: 'ica' },
+      { data: this.globalArrayCo2, label: 'co2' },
+      { data: this.globalArrayVoc, label: 'voc' },
+      { data: this.globalArrayNo2, label: 'no2' },
+      { data: this.globalArrayCo, label: 'co' },
+      { data: this.globalArrayPm10, label: 'pm10' },
+      { data: this.globalArrayPm25, label: 'pm25' },
     ];
   }
 
-  public graficoEstacionEspecifica() {
-    this.barChartOptions = {
-      responsive: true,
-      scales: { xAxes: [{}], yAxes: [{}] },
-      plugins: {
-        datalabels: {
-          anchor: 'end',
-          align: 'end'
-        }
-      }
-    };
-    const array = [];
-    const arrayValores = [];
-    this.fechas.forEach(element => {
-      array.push(element.nombre);
-      arrayValores.push(element.sumaTotal / element.totalRegistros);
-      this.sumIcaAuxiliar += element.sumaTotal / element.totalRegistros;
-
-    });
-    this.barChartLabels = array;
-    this.barChartType = 'bar';
-    this.barChartLegend = true;
-
-    this.barChartData = [
-      { data: arrayValores, label: 'ICA' }
-    ];
-
-  }
   public downloadReport(event: any) {
     window.scrollTo(0, 0);
     const doc = new jsPDF('p', 'mm', [800, 590]);
@@ -476,7 +345,7 @@ export class GraficasComponent implements OnInit {
     const fecha = new Date();
 
     const footer = 'Para mayor información ingrese a: www.smaq.com';
-    const codEstacion: string = this.estacionesValidas[this.opcionEstacion - 1].descripcion;
+    // const codEstacion: string = this.estacionesValidas[this.opcionEstacion - 1].descripcion; REVISAR DESCOMENTAR
     const lecturaPromedioCo: string = (this.sumCo.toFixed(3)).toString();
     const lecturaPromedioCo2: string = (this.sumCo2.toFixed(3)).toString();
     const lecturaPromedioPm1: string = (this.sumPm1.toFixed(3)).toString();
@@ -559,7 +428,7 @@ export class GraficasComponent implements OnInit {
       doc.setFontType('normal'); // tipo de letra
       doc.setTextColor(3, 3, 3);  // Color de letra
       doc.text('Nombre estación: ', 110, 120);
-      doc.text(codEstacion, 152, 120);
+      // doc.text(codEstacion, 152, 120); REVISAR DESCOMENTAR ***************************************
       doc.text('lectura Promedio ICA: ', 110, 127);
       doc.text(lecturaPromedioICA, 152, 127);
       doc.text('lectura Promedio Co: ', 110, 134);
