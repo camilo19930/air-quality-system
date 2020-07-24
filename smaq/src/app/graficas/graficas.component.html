@@ -25,7 +25,6 @@
     </div>
     <div>
       <select class="form-control form-control-lg" id="select" [(ngModel)]="opcionEstacion">
-        <!-- (change)="crearGrafica()" -->
         <option *ngFor="let nomEstacion of estacionesValidas" [value]="nomEstacion.id">
           {{nomEstacion.descripcion}}</option>
       </select>
@@ -52,12 +51,11 @@
   </div>
   <div class="espacio"></div>
   <h1>{{nombreEstacion}}</h1>
-  <div class="row" style="width: 98%;">
-    <div class="col-sm-12">
+  <div class="row justify-content-center align-items-center" style="width: 98%;">
+    <div class="col-sm-10">
       <div class="card sin_borde">
         <div class="card-body">
           <div class="content" id="img1Pdf">
-
             <div id="content_grafico_estaciones">
               <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
                 [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
@@ -68,7 +66,7 @@
         </div>
       </div>
     </div>
-    <div class="row" style="width:  98%;"*ngIf="ocultarTabla">
+    <div class="row" style="width: 98%;" *ngIf="ocultarTabla">
       <div class="col-sm-12">
         <!-- <div class="card sin_borde" style="height: 100%;"> -->
         <div class="card_estaciones sin_borde">
@@ -77,6 +75,7 @@
               <thead>
                 <tr class="titulo-tabla" id="img2Pdf">
                   <th scope="col">INFORMACiÓN GRÁFICO</th>
+                  <th scope="col"> </th>
                   <th scope="col"> </th>
                   <th scope="col"> </th>
                   <th scope="col"> </th>
@@ -94,6 +93,7 @@
                   <th class="columna" scope="row">dióxido de nitrogeno</th>
                   <th class="columna" scope="row">Nivel de PM10</th>
                   <th class="columna" scope="row">Nivel de PM2.5</th>
+                  <th class="columna" scope="row">Nivel de voc</th>
                 </tr>
                 <tr>
                   <td class="columna">{{nombreEstacion}}</td>
@@ -103,6 +103,7 @@
                   <td class="columna">{{sumCo2 | number}} ppm</td>
                   <td class="columna">{{sumPm10 | number}} ppm</td>
                   <td class="columna">{{sumPm25 | number}} ppm</td>
+                  <td class="columna">{{voc | number}} ppm</td>
                 </tr>
               </tbody>
             </table>
@@ -110,7 +111,7 @@
         </div>
       </div>
     </div>
-    <div class="row tabla-pequena" style="width:  98%;">    
+    <div class="row tabla-pequena" style="width:  98%;">
       <div class="col-sm-12" *ngIf="!ocultarTabla">
         <div class="card sin_borde" style="height: 100%;">
           <div class="card_estaciones sin_borde">
@@ -151,9 +152,13 @@
                     <th scope="row">Nivel de PM2.5:</th>
                     <td>{{sumPm25 | number}} ppm</td>
                   </tr>
+                  <tr>
+                    <th class="columna" scope="row">Nivel de voc</th>
+                    <td>{{voc | number}} ppm</td>
+                  </tr>
                 </tbody>
               </table>
-  
+
             </div>
           </div>
         </div>

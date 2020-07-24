@@ -32,92 +32,44 @@ export class GraficasComponent implements OnInit {
   public barChartLegend: boolean;
   public barChartData: ChartDataSets[];
   public codigoEstacion: any;
-  // datos dumy
   public nombreEstacion: any;
   public ubicacion: any;
-  // ejemplo
-  public titulo = 'Generar PDF con Angular JS 5';
   public barChartPlugins = [];
   // variables SUMA
-  public sumPm1 = 0;
+  public voc = 0;
   public sumPm25 = 0;
   public sumPm10 = 0;
   public sumCo = 0;
   public sumCo2 = 0;
   public sumIca = 0;
-  public contadorIteracion = 0;
+  public sumIcaAuxiliar = 0;
   public fechaDesde: string;
   public fechaHasta: string;
-  public pruebaArray = [];
-  public fechas: any = [];
-  public contMes = 0;
-  contadorPm1 = 0;
-  contadorPm25 = 0;
-  contadorPm10 = 0;
-  contadorIca = 0;
-  contadorCo = 0;
-  contadorCo2 = 0;
-  contadoGlobal = 0;
-  datoAnterior: any;
-  contar: any = 0;
-  contReiniciar = 0;
-  sumIcaAuxiliar = 0;
-  validadorConsulta = 0;
   public imagenReporte: ImagenesReportes;
-  globalArrayFechas: any = [];
-  globalArrayIca: any = [];
-  globalArrayCo2: any = [];
-  globalArrayVoc: any = [];
-  globalArrayNo2: any = [];
-  globalArrayCo: any = [];
-  globalArrayPm10: any = [];
-  globalArrayPm25: any = [];
-  globalArrayFechasTransformadas: any = [];
-  ocultarTabla = true;
-  datosGrafica: any = [];
-  datosGraficaEjemplo = [
-    {
-      mes: 5,
-      avg_ica: 102,
-      avg_co2: 500.00,
-      avg_voc: 74,
-      avg_no2: 99,
-      avg_co: 30,
-      avg_pm10: 96,
-      avg_pm25: 80
-    },
-    {
-      mes: 6,
-      avg_ica: 102,
-      avg_co2: 500.00,
-      avg_voc: 74,
-      avg_no2: 99,
-      avg_co: 30,
-      avg_pm10: 96,
-      avg_pm25: 80
-    },
-    {
-      mes: 7,
-      avg_ica: 102,
-      avg_co2: 500.00,
-      avg_voc: 74,
-      avg_no2: 99,
-      avg_co: 30,
-      avg_pm10: 96,
-      avg_pm25: 80
-    }
-  ];
+  public globalArrayFechas: any = [];
+  public globalArrayIca: any = [];
+  public globalArrayCo2: any = [];
+  public globalArrayVoc: any = [];
+  public globalArrayNo2: any = [];
+  public globalArrayCo: any = [];
+  public globalArrayPm10: any = [];
+  public globalArrayPm25: any = [];
+  public globalArrayFechasTransformadas: any = [];
+  public ocultarTabla = true;
+  public datosGrafica: any = [];
+
   constructor(
     private estacionService: EstacionService,
     private graficaService: GraficaService,
     private decimalPipe: DecimalPipe
   ) {
-    this.opcionEstacion = 0;
+    this.opcionEstacion = 1;
     this.imagenReporte = new ImagenesReportes();
-    this.fechaDesde = '2019-01-01';
-    this.fechaHasta = '2022-12-30';
+    this.fechaDesde = '2020-04-01';
+    this.fechaHasta = '2020-12-31';
     this.getScreenSize();
   }
+
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
     const scrHeight = window.innerHeight;
@@ -128,24 +80,10 @@ export class GraficasComponent implements OnInit {
       this.ocultarTabla = true;
     }
   }
+
   async ngOnInit() {
     this.obtenerEstaciones();
-    this.obtenerPromediosInicial(); // quitarlo
-    // await this.obtenerPromediosService(); ponerlo
-    this.parsearFecha(); // quitarlo
-    this.graficoEstaciones(); // quitarlo
-  }
-  obtenerPromediosInicial() {
-    this.datosGraficaEjemplo.forEach(element => {
-      this.globalArrayIca.push(element.avg_ica);
-      this.globalArrayFechas.push(element.mes);
-      this.globalArrayCo2.push(element.avg_co2);
-      this.globalArrayVoc.push(element.avg_voc);
-      this.globalArrayNo2.push(element.avg_no2);
-      this.globalArrayCo.push(element.avg_co);
-      this.globalArrayPm10.push(element.avg_pm10);
-      this.globalArrayPm25.push(element.avg_pm25);
-    });
+    await this.obtenerPromediosService();
   }
   parsearFecha() {
     this.globalArrayFechas.forEach(element => {
@@ -189,19 +127,21 @@ export class GraficasComponent implements OnInit {
       }
     });
   }
+
   async obtenerEstaciones() {
     await this.estacionService.getEstaciones().subscribe(estaciones => {
       this.estaciones = estaciones;
       this.validarEstaciones();
     });
   }
+
   validarEstaciones() {
     this.estaciones.forEach((element, index) => {
       if (element.estado) {
         this.estacionesValidas.push(element);
       }
     });
-    //ordenar datos del array
+    // tslint:disable-next-line: only-arrow-functions
     this.estacionesValidas.sort(function (a, b) {
       if (a.id > b.id) {
         return 1;
@@ -212,7 +152,6 @@ export class GraficasComponent implements OnInit {
       return 0;
     });
   }
-
 
   async llamarLecturas() {
     if (this.fechaDesde.length > 0 && this.fechaHasta.length > 0) {
@@ -234,41 +173,48 @@ export class GraficasComponent implements OnInit {
       Swal.fire({
         allowOutsideClick: true,
         type: 'error',
-        text: 'Debe ingresar un rango de fechas'
+        text: 'Debe ingresar un rango de fechas validas'
       });
     }
   }
+
   reiniciarVariables() {
-    this.contadoGlobal = 0;
-    this.contadorPm1 = 0;
-    this.contadorPm25 = 0;
-    this.contadorPm10 = 0;
-    this.contadorIca = 0;
-    this.contadorCo = 0;
-    this.contadorCo2 = 0;
-    this.contadorIteracion = 0;
     this.sumCo2 = 0;
     this.sumCo = 0;
     this.sumPm10 = 0;
-    this.sumPm1 = 0;
     this.sumPm25 = 0;
-    this.fechas = [];
-    this.pruebaArray = [];
     this.sumIca = 0;
-    this.contar = 0;
-    this.contReiniciar = 0;
     this.sumIcaAuxiliar = 0;
+    this.voc = 0;
+    this.globalArrayFechasTransformadas = [];
+    this.globalArrayFechas = [];
+    this.globalArrayIca = [];
+    this.globalArrayCo2 = [];
+    this.globalArrayVoc = [];
+    this.globalArrayNo2 = [];
+    this.globalArrayCo = [];
+    this.globalArrayPm10 = [];
+    this.globalArrayPm25 = [];
   }
   async obtenerPromediosService() {
     let respuesta;
     const fechaInicial = this.formatearFecha(this.fechaDesde);
     const fechaFinal = this.formatearFecha(this.fechaHasta);
-    respuesta = await this.graficaService.obtenerPromedios(this.opcionEstacion - 1, fechaInicial, fechaFinal)
+    Swal.fire({
+      allowOutsideClick: true,
+      type: 'info',
+      text: 'Consultando Información!'
+    });
+    Swal.showLoading();
+    respuesta = await this.graficaService.obtenerPromedios(this.opcionEstacion, fechaInicial, fechaFinal)
       .then((res) => {
         this.datosGrafica = res;
+        Swal.close();
       }).catch((error) => {
-        console.log(error);
+        Swal.close();
       });
+    this.obtenerEstacionNombre();
+    const cantRegistros = this.datosGrafica.length;
     if (this.datosGrafica.length > 0) {
       this.datosGrafica.forEach(element => {
         this.globalArrayIca.push(element.avg_ica);
@@ -279,40 +225,62 @@ export class GraficasComponent implements OnInit {
         this.globalArrayCo.push(element.avg_co);
         this.globalArrayPm10.push(element.avg_pm10);
         this.globalArrayPm25.push(element.avg_pm25);
+        this.sumCo += element.avg_co;
+        this.sumCo2 += element.avg_co2;
+        this.sumPm10 += element.avg_pm10;
+        this.sumPm25 += element.avg_pm25;
+        this.voc += element.avg_voc;
+        this.sumIcaAuxiliar += element.avg_ica;
       });
+      this.sumCo = this.sumCo / cantRegistros;
+      this.sumCo2 = this.sumCo2 / cantRegistros;
+      this.sumPm10 = this.sumPm10 / cantRegistros;
+      this.sumPm25 = this.sumPm25 / cantRegistros;
+      this.voc = this.voc / cantRegistros;
+      this.sumIcaAuxiliar = this.sumIcaAuxiliar / cantRegistros;
       await this.parsearFecha();
       this.graficoEstaciones();
+    } else {
+      this.globalArrayIca.push(0);
+      this.globalArrayFechas.push(0);
+      this.globalArrayCo2.push(0);
+      this.globalArrayVoc.push(0);
+      this.globalArrayNo2.push(0);
+      this.globalArrayCo.push(0);
+      this.globalArrayPm10.push(0);
+      this.globalArrayPm25.push(0);
+      this.graficoEstaciones();
+      Swal.fire({
+        allowOutsideClick: true,
+        type: 'info',
+        text: 'La Estación seleccionada no cuenta con registros en ese rango de fecha'
+      });
     }
-    console.log('datos recibidos', this.datosGrafica);
   }
+
   formatearFecha(fecha) {
     const fechaParsear = fecha.split('-');
     return `${fechaParsear[2]}-${fechaParsear[1]}-${fechaParsear[0]}`;
   }
+
   async obtenerDispositivos() {
     let respuesta;
     respuesta = await this.graficaService.obtenerDispositivos()
       .then((res) => {
         this.dispositivos = res;
-      }).catch((error) => {
-        console.log(error);
-      });
+      }).catch((error) => { });
   }
-  public crearGrafica() {
-    this.contar = 0;
-    this.estacionSeleccionada = this.estacionesValidas[(this.opcionEstacion - 2)];
+
+  public obtenerEstacionNombre() {
+    this.estacionSeleccionada = this.estacionesValidas[(this.opcionEstacion - 1)];
     this.nombreEstacion = this.estacionSeleccionada.descripcion;
-    if ((this.opcionEstacion - 2) === 0) {
-      this.ubicacion = 'carrera 40 con calle ';  // estacion 0 salida sur
+    if (this.opcionEstacion === 0) {
+      this.ubicacion = 'carrera 40 con calle ';
     } else {
-      this.ubicacion = 'calle 27 con carrera 36'; // estacion 1 centro
-    }
-    if ((this.opcionEstacion - 1) !== 0) {
-      // this.graficoEstacionEspecifica();
-    } else {
-      this.graficoEstaciones();
+      this.ubicacion = 'calle 27 con carrera 36';
     }
   }
+
   public graficoEstaciones() {
     this.barChartOptions = {
       responsive: true,
@@ -343,18 +311,17 @@ export class GraficasComponent implements OnInit {
     const doc = new jsPDF('p', 'mm', [800, 590]);
     const header = 'INFORME DE ESTACIONES SMAQ';
     const fecha = new Date();
-
-    const footer = 'Para mayor información ingrese a: www.smaq.com';
-    // const codEstacion: string = this.estacionesValidas[this.opcionEstacion - 1].descripcion; REVISAR DESCOMENTAR
+    const footer = 'Para mayor información ingrese a: http://test.denkitronik.com/smaq/';
+    const codEstacion: string = this.nombreEstacion;
     const lecturaPromedioCo: string = (this.sumCo.toFixed(3)).toString();
     const lecturaPromedioCo2: string = (this.sumCo2.toFixed(3)).toString();
-    const lecturaPromedioPm1: string = (this.sumPm1.toFixed(3)).toString();
     const lecturaPromedioPm25: string = (this.sumPm25.toFixed(3)).toString();
     const lecturaPromedioPm10: string = (this.sumPm10.toFixed(3)).toString();
-    const lecturaPromedioICA: string = (this.sumIca.toFixed(3)).toString();
+    const lecturaPromedioICA: string = (this.sumIcaAuxiliar.toFixed(3)).toString();
+    const lecturaPromedioVOC: string = (this.voc.toFixed(3)).toString();
     const posicionX = 100;
     const posicionY = 70;
-
+    // tslint:disable-next-line: only-arrow-functions
     html2canvas(document.getElementById('img1Pdf')).then(function (canvas) {
       // incio rectangulo
       doc.setFillColor(54, 178, 75);  // Rectangulo header
@@ -428,7 +395,7 @@ export class GraficasComponent implements OnInit {
       doc.setFontType('normal'); // tipo de letra
       doc.setTextColor(3, 3, 3);  // Color de letra
       doc.text('Nombre estación: ', 110, 120);
-      // doc.text(codEstacion, 152, 120); REVISAR DESCOMENTAR ***************************************
+      doc.text(codEstacion, 152, 120);
       doc.text('lectura Promedio ICA: ', 110, 127);
       doc.text(lecturaPromedioICA, 152, 127);
       doc.text('lectura Promedio Co: ', 110, 134);
@@ -439,6 +406,8 @@ export class GraficasComponent implements OnInit {
       doc.text(lecturaPromedioPm25, 152, 148);
       doc.text('lectura Promedio Pm10: ', 110, 155);
       doc.text(lecturaPromedioPm10, 152, 155);
+      doc.text('lectura Promedio VOC: ', 110, 162);
+      doc.text(lecturaPromedioVOC, 152, 162);
       // info lecturas
       // titulo colores contaminacion
       doc.setFontSize(8);
@@ -471,6 +440,7 @@ export class GraficasComponent implements OnInit {
       // doc.addImage(img, 'JPEG', 5, 105, 110, 70); // x,y,width, heidt
       doc.addImage(img, 'png', 5, 105, (posicionX), (posicionY)); // x,y,width, heidt
     });
+    // tslint:disable-next-line: only-arrow-functions
     html2canvas(document.getElementById('img1Pdf')).then(function (canvas) {
       const img2 = canvas.toDataURL('image/png');
       // doc.addImage(img2,'png',100,105,100,70);
