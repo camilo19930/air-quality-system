@@ -55,27 +55,29 @@
 }
 
 @media only screen and (max-width: 415px) {
-    .btn {
-        margin: -10px 0px 0px 65%;
-    }
-    .informacionEstaciones {
-        width: 340px;
-        margin-left: 0px;
-    }
-    .btn {
-        align-content: center;
-        font-size: 13px;
-        height: 46px;
-        width: 100px;
-    }
-    .titulo {
-        font-size: 20px;
-        height: 60px;
-        margin: auto;
+    .downloadReport {
+        margin: -10px 0px 0px 58%;
     }
     .tabla-pequena {
         width: 70%;
         margin-right: 70px;
+    } 
+    .seleccion {
+        width: 98% !important;
+        margin-left: 10px;
+    }
+    .grafica {
+        width: 95% !important;
+    }
+    .fecha-valor {
+        width: 100%;
+        margin-top: 5px;
+    }
+    .boton-buscar {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        margin-left: 60px;
+        width: 100%;
     }
 }
 
@@ -90,6 +92,7 @@
     text-align: justify;
     width: 94%;
     margin: auto;
+    font-size: 16px;
 }
 
 .sin_borde {

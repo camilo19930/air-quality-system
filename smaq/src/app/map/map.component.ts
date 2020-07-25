@@ -68,7 +68,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
   public seleccionarColor(indiceGeneral) {
     this.llenarLecturas(indiceGeneral);
-    var indice = indiceGeneral.ica;
+    const indice = indiceGeneral.ica;
     if (indice >= 0 && indice <= 50) {
       this.colorCalidad = '#15cf20';
     } else {
@@ -100,7 +100,7 @@ export class MapComponent implements OnInit, OnDestroy {
     let longitud: string;
     let latitud: string;
     let i = 0;
-    for (let estacion of this.estaciones) {
+    for (const estacion of this.estaciones) {
       if (this.estaciones[i].estado === false) {
         i++;
       } else {
@@ -117,7 +117,6 @@ export class MapComponent implements OnInit, OnDestroy {
         });
         const marker = L.marker([latitud, longitud], { icon: myIcon })
           .addTo(this.map);
-
         marker.on('click', function (e) {
           document.getElementById('tablaDetallada').style.display = 'block';
           const nomEstacion = document.getElementById('nomEstacion');

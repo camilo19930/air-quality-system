@@ -9,6 +9,7 @@ import { GraficaService } from '../services/graficas/grafica.service';
 import { ImagenesReportes } from './imagenesReportes';
 import { DecimalPipe } from '@angular/common';
 import Swal from 'sweetalert2';
+import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-graficas',
@@ -17,6 +18,7 @@ import Swal from 'sweetalert2';
 })
 
 export class GraficasComponent implements OnInit {
+  @ViewChild ('graficaHtml', null) graficaHtml: ElementRef;
   public estaciones: Estacion[];
   public estacionesValidas: any = [];
   public dispositivos: any;
@@ -57,6 +59,7 @@ export class GraficasComponent implements OnInit {
   public globalArrayFechasTransformadas: any = [];
   public ocultarTabla = true;
   public datosGrafica: any = [];
+  public espacio = false;
 
   constructor(
     private estacionService: EstacionService,
@@ -76,12 +79,15 @@ export class GraficasComponent implements OnInit {
     const scrWidth = window.innerWidth;
     if (window.innerWidth < 815) {
       this.ocultarTabla = false;
+      this.espacio = true;
     } else {
       this.ocultarTabla = true;
+      this.espacio = false;
     }
   }
 
   async ngOnInit() {
+    this.graficoEstaciones();
     this.obtenerEstaciones();
     await this.obtenerPromediosService();
   }
