@@ -28,7 +28,7 @@
     "core-js": "^2.5.4",
     "crypto-js": "^4.0.0",
     "html2canvas": "^1.0.0-rc.3",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "leaflet": "^1.5.1",
     "leaflet-routing-machine": "^3.2.12",
     "ng2-charts": "^2.2.0",
